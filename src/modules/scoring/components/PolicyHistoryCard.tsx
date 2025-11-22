@@ -7,6 +7,7 @@ import { getStatusIcon } from "../utils/policyEngine.utils";
 
 interface PolicyHistoryCardProps {
   entry: PolicyExecutionHistory;
+  
 }
 
 export const PolicyHistoryCard: React.FC<PolicyHistoryCardProps> = ({
