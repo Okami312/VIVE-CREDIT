@@ -6,6 +6,7 @@ import LoanPage from "@/modules/dashboard/pages/LoanPage";
 import PaymentsPage from "@/modules/dashboard/pages/PaymentsPage";
 import DocumentsPage from "@/modules/dashboard/pages/DocumentsPage";
 import { RiskDashboard } from "@modules/operator-dashboard/risk";
+import { PolicyEnginePage } from "@/modules/scoring";
 
 const AppRoutes = () => {
   return (
@@ -29,6 +30,9 @@ const AppRoutes = () => {
 
       {/* Fallback */}
       <Route path="*" element={<Navigate to="/" replace />} />
+
+      {/* Policy Engine */}
+      <Route path="/policy-engine" element={<PolicyEnginePage />} />
     </Routes>
   );
 };
