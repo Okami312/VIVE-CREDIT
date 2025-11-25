@@ -1,5 +1,3 @@
-// src/modules/scoring/components/PolicyHistoryCard.tsx
-
 import React, { useState } from "react";
 import { ChevronDown, ChevronUp, CheckCircle2, XCircle } from "lucide-react";
 import type { PolicyExecutionHistory } from "../types/policyEngine.types";
