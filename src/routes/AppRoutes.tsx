@@ -3,11 +3,6 @@ import { AuditDashboard } from "@/modules/admin-audit/AuditDashboard";
 import DocumentsPage from "@/modules/dashboard/pages/DocumentsPage";
 import LoanPage from "@/modules/dashboard/pages/LoanPage";
 import PaymentsPage from "@/modules/dashboard/pages/PaymentsPage";
-<<<<<<< HEAD
-import DocumentsPage from "@/modules/dashboard/pages/DocumentsPage";
-import { RiskDashboard } from "@modules/operator-dashboard/risk";
-import { PolicyEnginePage } from "@/modules/scoring";
-=======
 import OnboardingPage from "@/modules/onboarding/pages/OnboardingPage";
 import SuccessPage from "@/modules/onboarding/pages/SuccessPage";
 import { PolicyEnginePage } from "@/modules/scoring";
@@ -17,7 +12,6 @@ import RiskPage from "@/modules/operator-dashboard/pages/RiskPage";
 import { Route, Routes, Navigate } from "react-router-dom";
 import LoanForm from "@/pages/loan/LoanForm";
 import DecisionPage from "@/modules/decision-engine/Pages/DecisionPage";
->>>>>>> upstream/main
 
 const AppRoutes = () => {
   return (
