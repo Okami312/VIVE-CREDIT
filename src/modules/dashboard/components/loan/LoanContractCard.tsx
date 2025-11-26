@@ -1,4 +1,4 @@
-import CardWrapper from "./CardWrapper";
+import CardWrapper from "../CardWrapper";
 import { FileText, ShieldCheck, Info } from "lucide-react";
 
 interface LoanContractCardProps {

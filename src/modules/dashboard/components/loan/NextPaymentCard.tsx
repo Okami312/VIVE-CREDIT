@@ -1,6 +1,6 @@
 import { useState } from "react";
-import CardWrapper from "./CardWrapper";
-import PaymentModal from "./PaymentModal";
+import CardWrapper from "../CardWrapper";
+import PaymentModal from "../PaymentModal";
 import { Calendar, CreditCard, Clock } from "lucide-react";
 
 interface NextPaymentProps {

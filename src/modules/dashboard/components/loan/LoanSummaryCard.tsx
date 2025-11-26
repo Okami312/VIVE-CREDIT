@@ -1,4 +1,4 @@
-import CardWrapper from "./CardWrapper";
+import CardWrapper from "../CardWrapper";
 import { TrendingUp } from "lucide-react";
 
 interface LoanSummaryCardProps {

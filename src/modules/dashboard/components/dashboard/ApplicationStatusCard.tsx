@@ -1,5 +1,5 @@
 import { CheckCircle, Clock, Loader2, AlertTriangle } from "lucide-react";
-import CardWrapper from "./CardWrapper";
+import CardWrapper from "../CardWrapper";
 
 interface ApplicationStatusCardProps {
   status: "pending" | "in_review" | "approved" | "rejected";

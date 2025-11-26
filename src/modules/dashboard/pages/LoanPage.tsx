@@ -1,10 +1,10 @@
 import DashboardLayout from "../layout/DashboardLayout";
 import { loanMock } from "../mock/loanMock";
 
-import LoanSummaryCard from "../components/LoanSummaryCard";
-import LoanProgressCard from "../components/LoanProgressCard";
-import NextPaymentCard from "../components/NextPaymentCard";
-import LoanContractCard from "../components/LoanContractCard";
+import LoanSummaryCard from "../components/loan/LoanSummaryCard";
+import LoanProgressCard from "../components/loan/LoanProgressCard";
+import NextPaymentCard from "../components/loan/NextPaymentCard";
+import LoanContractCard from "../components/loan/LoanContractCard";
 
 export default function LoanPage() {
   const data = loanMock;

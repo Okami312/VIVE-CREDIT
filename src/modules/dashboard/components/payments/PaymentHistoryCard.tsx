@@ -1,4 +1,4 @@
-import CardWrapper from "./CardWrapper";
+import CardWrapper from "../CardWrapper";
 import { CreditCard, CheckCircle, Clock } from "lucide-react";
 
 interface PaymentItem {

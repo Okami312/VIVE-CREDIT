@@ -1,5 +1,5 @@
 import { FileText, Download } from "lucide-react";
-import CardWrapper from "./CardWrapper";
+import CardWrapper from "../CardWrapper";
 
 interface DocumentItem {
   id: string;

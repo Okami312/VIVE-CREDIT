@@ -1,10 +1,10 @@
 import DashboardLayout from "../layout/DashboardLayout";
 import { dashboardMock } from "../mock/dashboardMock";
 
-import ApplicationStatusCard from "../components/ApplicationStatusCard";
-import LoanDetailsCard from "../components/LoanDetailsCard";
-import DocumentsCard from "../components/DocumentsCard";
-import PaymentHistoryCard from "../components/PaymentHistoryCard";
+import ApplicationStatusCard from "../components/dashboard/ApplicationStatusCard";
+import LoanDetailsCard from "../components/loan/LoanDetailsCard";
+import DocumentsCard from "../components/dashboard/DocumentsCard";
+import PaymentHistoryCard from "../components/payments/PaymentHistoryCard";
 
 export default function DashboardPage() {
   const data = dashboardMock;

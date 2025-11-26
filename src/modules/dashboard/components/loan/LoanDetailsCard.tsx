@@ -1,4 +1,4 @@
-import CardWrapper from "./CardWrapper";
+import CardWrapper from "../CardWrapper";
 import { CreditCard } from "lucide-react";
 import type { LoanDetails } from "@/modules/dashboard/types/dashboard";
 
