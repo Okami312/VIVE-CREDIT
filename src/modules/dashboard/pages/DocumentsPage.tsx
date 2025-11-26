@@ -1,11 +1,23 @@
-export default function DocumentsPage() {
-  return (
-    <div className="p-6">
-      <h1 className="text-2xl font-semibold text-blue-700 mb-4">Documente</h1>
+import DashboardLayout from "../layout/DashboardLayout";
+import { documentsMock } from "../mock/documentsMock";
+import DocumentsFilters from "../components/documents/DocumentsFilters";
 
-      <p className="text-gray-600">
-        Aici vor fi afișate documentele descărcabile.
-      </p>
-    </div>
+export default function DocumentsPage() {
+  const documents = documentsMock;
+
+  return (
+    <DashboardLayout>
+      <div className="space-y-6">
+        <div>
+          <h1 className="text-2xl font-bold text-blue-700">Documentele mele</h1>
+          <p className="text-sm text-gray-600 mt-1">
+            Aici găsești toate documentele tale de credit: contractul semnat,
+            graficul de rambursare și actele încărcate pentru verificare.
+          </p>
+        </div>
+
+        <DocumentsFilters documents={documents} />
+      </div>
+    </DashboardLayout>
   );
 }

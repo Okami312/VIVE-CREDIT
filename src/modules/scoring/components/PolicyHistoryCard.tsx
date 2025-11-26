@@ -1,5 +1,8 @@
+<<<<<<< HEAD
 // src/modules/scoring/components/PolicyHistoryCard.tsx
 
+=======
+>>>>>>> upstream/main
 import React, { useState } from "react";
 import { ChevronDown, ChevronUp, CheckCircle2, XCircle } from "lucide-react";
 import type { PolicyExecutionHistory } from "../types/policyEngine.types";
@@ -7,6 +10,10 @@ import { getStatusIcon } from "../utils/policyEngine.utils";
 
 interface PolicyHistoryCardProps {
   entry: PolicyExecutionHistory;
+<<<<<<< HEAD
+=======
+  
+>>>>>>> upstream/main
 }
 
 export const PolicyHistoryCard: React.FC<PolicyHistoryCardProps> = ({

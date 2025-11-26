@@ -37,9 +37,13 @@ export const usePolicyEngine = (): UsePolicyEngineReturn => {
   >(null);
   const [error, setError] = useState<string | null>(null);
 
+<<<<<<< HEAD
   /**
    * Încarcă regulile de la backend
    */
+=======
+  /* Încarcă regulile de la backend */
+>>>>>>> upstream/main
   const fetchRules = useCallback(async () => {
     setIsLoading(true);
     setError(null);
@@ -54,9 +58,13 @@ export const usePolicyEngine = (): UsePolicyEngineReturn => {
     }
   }, []);
 
+<<<<<<< HEAD
   /**
    * Activează/dezactivează o regulă
    */
+=======
+  /* Activează/dezactivează o regulă */
+>>>>>>> upstream/main
   const toggleRule = useCallback((ruleId: string) => {
     setRules((prev) =>
       prev.map((rule) =>
@@ -65,9 +73,13 @@ export const usePolicyEngine = (): UsePolicyEngineReturn => {
     );
   }, []);
 
+<<<<<<< HEAD
   /**
    * Activează/dezactivează stop-on-fail pentru o regulă
    */
+=======
+  /* Activează/dezactivează stop-on-fail pentru o regulă */
+>>>>>>> upstream/main
   const toggleStopOnFail = useCallback((ruleId: string) => {
     setRules((prev) =>
       prev.map((rule) =>
@@ -76,9 +88,13 @@ export const usePolicyEngine = (): UsePolicyEngineReturn => {
     );
   }, []);
 
+<<<<<<< HEAD
   /**
    * Actualizează configurația unei reguli
    */
+=======
+  /* Actualizează configurația unei reguli */
+>>>>>>> upstream/main
   const updateRuleConfig = useCallback(
     (ruleId: string, config: Record<string, unknown>) => {
       setRules((prev) =>
@@ -92,9 +108,13 @@ export const usePolicyEngine = (): UsePolicyEngineReturn => {
     []
   );
 
+<<<<<<< HEAD
   /**
    * Execută toate regulile active în ordine
    */
+=======
+  /* Execută toate regulile active în ordine */
+>>>>>>> upstream/main
   const executeRules = useCallback(async () => {
     setIsExecuting(true);
     setExecutionResults([]);
