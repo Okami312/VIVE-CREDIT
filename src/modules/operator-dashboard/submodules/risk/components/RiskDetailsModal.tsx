@@ -25,6 +25,7 @@ export default function RiskDetailsModal({
       onClose={onClose}
       title={`Detalii aplicatie : ${application.id}`}
       width="w-[480px]"
+      className="dark:text-gray-700"
     >
       <div className="space-y-2">
         <p>
