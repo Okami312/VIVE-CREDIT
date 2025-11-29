@@ -24,7 +24,7 @@ export const mockRiskApp = [
     id: "R004",
     client: "Marius Marius",
     score: 300,
-    status: "manual_review",
+    status: "pending",
     reasonCodes: ["RC023"],
   },
   {
@@ -38,7 +38,7 @@ export const mockRiskApp = [
     id: "R006",
     client: "Marius Marius",
     score: 300,
-    status: "manual_review",
+    status: "regected",
     reasonCodes: ["RC023"],
   },
   {
@@ -52,21 +52,21 @@ export const mockRiskApp = [
     id: "R008",
     client: "Marius Marius",
     score: 300,
-    status: "manual_review",
+    status: "pending",
     reasonCodes: ["RC023"],
   },
   {
     id: "R009",
     client: "Ion Ion",
     score: 100,
-    status: "rejected",
+    status: "pending",
     reasonCodes: ["RC017", "RC045"], //<300 more reason codes
   },
   {
     id: "R0010",
     client: "Marius Marius",
     score: 300,
-    status: "manual_review",
+    status: "pending",
     reasonCodes: ["RC023"],
   },
   {
@@ -80,7 +80,7 @@ export const mockRiskApp = [
     id: "R0012",
     client: "Marius Marius",
     score: 300,
-    status: "manual_review",
+    status: "pending",
     reasonCodes: ["RC023"],
   },
 ];

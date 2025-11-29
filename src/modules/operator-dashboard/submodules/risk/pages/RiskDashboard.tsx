@@ -23,7 +23,8 @@ export interface RiskApplication {
 }
 
 export default function RiskDashboard() {
-  const [applications, setApplications] = useState<RiskApplication[]>(mockRiskApp);
+  const [applications, setApplications] =
+    useState<RiskApplication[]>(mockRiskApp);
   const [filters, setFilters] = useState({ status: "", search: "" });
   const [selectedApp, setSelectedApp] = useState<RiskApplication | null>(null);
 
@@ -74,7 +75,7 @@ export default function RiskDashboard() {
         );
       },
     },
-    { key: "Scor", label: "Scor" },
+    { key: "score", label: "Scor" },
     {
       key: "reasonCodes",
       label: "Reason Codes",

@@ -1,5 +1,5 @@
 import { Card, CardContent } from "@/components/ui/card";
-import { DollarSign, Home, ShieldCheck, Users } from "lucide-react";
+import { DollarSign, ShieldCheck, Users } from "lucide-react";
 
 import { NavLink } from "react-router-dom";
 
