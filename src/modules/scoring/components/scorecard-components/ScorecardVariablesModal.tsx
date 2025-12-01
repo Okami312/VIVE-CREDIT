@@ -23,7 +23,7 @@ export const ScorecardVariablesModal: React.FC<PropsModal> = ({
 }) => {
   const [name, setName] = useState('');
   const [typeModal, setTypeModal] = useState('');
-  const [booleanValue, setBooleanValue] = useState('');
+  const [booleanValue, setBooleanValue] = useState<'true' | 'false' | ''>('');
   const [weight, setWeight] = useState<number>(0);
   const [error, setError] = useState({ name: '', typeModal: '', weight: '' });
   const [active, setActive] = useState(false);
@@ -36,6 +36,7 @@ export const ScorecardVariablesModal: React.FC<PropsModal> = ({
       setWeight(initialVariable.weight);
       setActive(initialVariable.active);
       setRules(initialVariable.rules);
+      setBooleanValue(initialVariable?.booleanV ?? '');
     } else {
       setName('');
       setTypeModal('');
@@ -136,6 +137,10 @@ export const ScorecardVariablesModal: React.FC<PropsModal> = ({
       weight,
       active,
       rules,
+      booleanV:
+        typeModal === 'boolean' && booleanValue !== ''
+          ? booleanValue
+          : undefined,
     };
 
     onSave(newVariable);

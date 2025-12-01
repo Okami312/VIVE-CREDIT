@@ -20,6 +20,7 @@ export type Variable = {
   weight: number;
   active: boolean;
   rules: Rule[];
+  booleanV?: 'true' | 'false';
 };
 
 export type PropsModal = {
