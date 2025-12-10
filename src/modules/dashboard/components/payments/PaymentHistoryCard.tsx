@@ -16,22 +16,21 @@ interface Props {
 export default function PaymentHistoryCard({ payments }: Props) {
   const statusConfig = {
     completed: {
-      color: "text-green-600",
-      icon: <CheckCircle size={18} className="text-green-600" />,
+      color: "text-green-600 dark:text-green-300",
+      icon: (
+        <CheckCircle size={18} className="text-green-600 dark:text-green-300" />
+      ),
       label: "Finalizată",
     },
     pending: {
-      color: "text-blue-600",
-      icon: <Clock size={18} className="text-blue-600" />,
+      color: "text-blue-600 dark:text-blue-300",
+      icon: <Clock size={18} className="text-blue-600 dark:text-blue-300" />,
       label: "În procesare",
     },
   } as const;
 
   return (
-    <CardWrapper
-      title="Istoric plăți"
-      icon={<CreditCard size={22} className="text-blue-600" />}
-    >
+    <CardWrapper title="Istoric plăți" icon={<CreditCard size={22} />}>
       <div className="space-y-4">
         {payments.map((p) => {
           const cfg = statusConfig[p.status];
@@ -39,14 +38,22 @@ export default function PaymentHistoryCard({ payments }: Props) {
           return (
             <div
               key={p.id}
-              className="flex items-center justify-between bg-blue-50 border border-blue-100 p-3 rounded-lg"
+              className="
+                flex items-center justify-between p-3 rounded-lg
+                bg-blue-50 border border-blue-100
+                dark:bg-[#2A3B55A6] dark:border-white/10
+              "
             >
               <div>
-                <p className="text-gray-800 font-medium">
+                <p className="text-gray-800 dark:text-gray-200 font-medium">
                   {p.amount.toLocaleString("ro-RO")} RON
                 </p>
-                <p className="text-sm text-gray-500">{p.date}</p>
-                <p className="text-sm text-gray-500 capitalize">{p.method}</p>
+                <p className="text-sm text-gray-500 dark:text-gray-400">
+                  {p.date}
+                </p>
+                <p className="text-sm text-gray-500 dark:text-gray-400 capitalize">
+                  {p.method}
+                </p>
               </div>
 
               <div className="flex items-center gap-2">

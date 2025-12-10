@@ -1,42 +1,45 @@
-import "../../style/scorecard.css";
-import { useEffect, useState } from "react";
+import '../../style/scorecard.css';
+import { useEffect, useState } from 'react';
 import {
+  typesOptions,
   variableOptions,
   type PropsModal,
   type Rule,
   type Variable,
-} from "../../types/Scorecard.types";
+} from '../../types/Scorecard.types';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { Checkbox } from "@/components/ui/checkbox";
+} from '@/components/ui/select';
+import { Checkbox } from '@/components/ui/checkbox';
 
 export const ScorecardVariablesModal: React.FC<PropsModal> = ({
   onClose,
   onSave,
   initialVariable = null,
 }) => {
-  const [name, setName] = useState<(typeof variableOptions)[number] | "">("");
-  const [type, setType] = useState<"numeric" | "enum" | "boolean" | "">("");
+  const [name, setName] = useState('');
+  const [typeModal, setTypeModal] = useState('');
+  const [booleanValue, setBooleanValue] = useState<'true' | 'false' | ''>('');
   const [weight, setWeight] = useState<number>(0);
-  const [error, setError] = useState("");
+  const [error, setError] = useState({ name: '', typeModal: '', weight: '' });
   const [active, setActive] = useState(false);
   const [rules, setRules] = useState<Rule[]>([]);
 
   useEffect(() => {
     if (initialVariable) {
       setName(initialVariable.name);
-      setType(initialVariable.type);
+      setTypeModal(initialVariable.type);
       setWeight(initialVariable.weight);
       setActive(initialVariable.active);
       setRules(initialVariable.rules);
+      setBooleanValue(initialVariable?.booleanV ?? '');
     } else {
-      setName("");
-      setType("numeric");
+      setName('');
+      setTypeModal('');
       setWeight(0);
       setActive(true);
       setRules([]);
@@ -46,77 +49,68 @@ export const ScorecardVariablesModal: React.FC<PropsModal> = ({
   const handleWeightChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
 
-    if (value === "") {
-      setWeight(0);
-      setError("");
+    if (value === '') {
+      setWeight(NaN);
+      setError((prev) => ({ ...prev, weight: '' }));
       return;
     }
 
-    const regex = /^([01])(\.\d{0,2})?$/;
-    if (!regex.test(value)) {
+    if (!/^\d*\.?\d{0,2}$/.test(value)) {
       return;
     }
-
     const num = parseFloat(value);
 
     if (isNaN(num)) {
-      setError("Valoarea nu este validă.");
+      setError((prev) => ({ ...prev, weight: 'Valoarea nu este validă.' }));
       return;
     }
 
     if (num < 0) {
-      setError("Valoarea nu poate fi negativă.");
+      setError((prev) => ({
+        ...prev,
+        weight: 'Valoarea nu poate fi negativă.',
+      }));
       return;
     }
 
     if (num > 1) {
-      setError("Valoarea trebuie să fie ≤ 1.00.");
+      setError((prev) => ({
+        ...prev,
+        weight: 'Valoarea trebuie să fie ≤ 1.00.',
+      }));
       return;
     }
 
     setWeight(num);
-    setError("");
+    setError((prev) => ({ ...prev, weight: '' }));
   };
 
   const handleWeightBlur = () => {
     if (isNaN(weight)) return;
 
-    const formatted = Number(weight.toFixed(2));
+    let formatted = Math.min(Math.max(weight, 0), 1);
+
+    if (formatted < 1) {
+      formatted = Number(formatted.toFixed(2));
+    }
     setWeight(formatted);
   };
 
-  const addRule = () => {
-    setRules([...rules, { condition: "", score: 0 }]);
+  const addRules = () => {
+    setRules([...rules, { condition: '', score: 0 }]);
   };
 
-  const updateRule = (
+  const updateRules = <K extends keyof Rule>(
     index: number,
-    field: keyof Rule,
-    value: string | number
+    field: K,
+    value: Rule[K]
   ) => {
-    const newRules = [...rules];
-    if (field === "score") {
-      newRules[index].score = Number(value);
-    } else if (field === "condition") {
-      newRules[index].condition = String(value);
-    }
-    setRules(newRules);
-  };
-
-  const handleSave = () => {
-    if (!type) {
-      alert("Trebuie să selectezi un tip!");
-      return;
-    }
-    const newVariable: Variable = {
-      id: initialVariable?.id || Date.now().toString(),
-      name: name as (typeof variableOptions)[number],
-      type,
-      weight,
-      active,
-      rules,
+    const newRule = [...rules];
+    newRule[index] = {
+      ...newRule[index],
+      [field]: value,
     };
-    onSave(newVariable);
+    setRules(newRule);
   };
 
   const removeRule = (index: number) => {
@@ -125,14 +119,39 @@ export const ScorecardVariablesModal: React.FC<PropsModal> = ({
     setRules(newRules);
   };
 
-  const isBoolean = type === "boolean";
-  const isEditing = !!initialVariable;
+  const handleSave = () => {
+    if (!name) {
+      setError((prev) => ({ ...prev, name: 'Alege o variabilă!' }));
+      return;
+    }
 
+    if (!typeModal) {
+      setError((prev) => ({ ...prev, typeModal: 'Alege un tip!' }));
+      return;
+    }
+
+    const newVariable: Variable = {
+      id: initialVariable?.id || Date.now().toString(),
+      name: name as (typeof variableOptions)[number],
+      type: typeModal as (typeof typesOptions)[number],
+      weight,
+      active,
+      rules,
+      booleanV:
+        typeModal === 'boolean' && booleanValue !== ''
+          ? booleanValue
+          : undefined,
+    };
+
+    onSave(newVariable);
+  };
+
+  const isEditing = !!initialVariable;
   return (
-    <div className="fixed inset-0 bg-black/30 backdrop-blur-md  flex items-center justify-center z-50 p-6">
-      <div className="bg-white mx-auto w-full max-w-md shadow-2xl rounded-xl p-6">
+    <div className="fixed inset-0 bg-black/30  backdrop-blur-md flex justify-center z-50 p-6 overflow-y-auto">
+      <div className="bg-white dark:bg-slate-800 mx-auto w-full max-w-md shadow-2xl rounded-xl p-6 my-auto">
         <h1 className="text-lg lg:text-xl font-bold text-center">
-          {isEditing ? "Editează variabilă" : "Adaugă variabilă"}
+          {isEditing ? 'Editează variabilă' : 'Adaugă variabilă'}
         </h1>
 
         {/* Variabila */}
@@ -144,33 +163,63 @@ export const ScorecardVariablesModal: React.FC<PropsModal> = ({
             </label>
             <Select
               value={name}
-              onValueChange={(val) =>
-                setName(val as (typeof variableOptions)[number])
-              }
+              onValueChange={(val) => {
+                setName(val as (typeof variableOptions)[number]);
+                setError((prev) => ({ ...prev, name: '' }));
+              }}
             >
-              <SelectTrigger className="w-full border-blue-300 text-blue-950 shadow-md shadow-indigo-500/50 focus:outline-none focus:ring-0 focus:ring-offset-0">
+              <SelectTrigger className="w-full border-blue-300 text-blue-950 dark:!text-white  focus:outline-none focus:ring-0 focus:ring-offset-0">
                 <SelectValue placeholder="Alege variabila" />
               </SelectTrigger>
 
+              <SelectContent className="rounded-b-md ">
+                {variableOptions.map((opt) => (
+                  <SelectItem key={opt} value={opt}>
+                    {opt === 'venit'
+                      ? 'Venit'
+                      : opt === 'varsta'
+                      ? 'Vârstă'
+                      : opt === 'sector'
+                      ? 'Sector'
+                      : opt === 'istorice'
+                      ? 'Istoric'
+                      : opt === 'kyc'
+                      ? 'KYC Flags'
+                      : opt}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+          {error.name && (
+            <span className="text-red-500 dark:text-red-400 text-[10px] text-end w-full">
+              {error.name}
+            </span>
+          )}
+
+          {/* Tip */}
+
+          <div className="flex flex-col md:flex-row gap-2">
+            <label className="text-md font-semibold w-full">Tip</label>
+            <Select
+              value={typeModal}
+              onValueChange={(val) => {
+                setTypeModal(val as (typeof typesOptions)[number]);
+                setError((prev) => ({ ...prev, typeModal: '' }));
+              }}
+            >
+              <SelectTrigger className="w-full border-blue-300 text-blue-950 dark:!text-white  focus:outline-none focus:ring-0 focus:ring-offset-0 data-[state=open]:ring-0 data-[state=open]:outline-none">
+                <SelectValue placeholder="Selectează tipul" />
+              </SelectTrigger>
               <SelectContent className="rounded-b-md">
-                {variableOptions.map((opt, index) => (
-                  <SelectItem
-                    key={opt}
-                    value={opt}
-                    className={`hover:bg-blue-200 ${
-                      index === variableOptions.length - 1 ? "rounded-b-md" : ""
-                    }`}
-                  >
-                    {opt === "varsta"
-                      ? "Vârstă"
-                      : opt === "venit"
-                      ? "Venit"
-                      : opt === "sector"
-                      ? "Sector"
-                      : opt === "istorice"
-                      ? "Istorice plăți"
-                      : opt === "kyc"
-                      ? "KYC Flags"
+                {typesOptions.map((opt) => (
+                  <SelectItem value={opt} key={opt}>
+                    {opt === 'numeric'
+                      ? 'Numeric'
+                      : opt === 'enum'
+                      ? 'Enum'
+                      : opt === 'boolean'
+                      ? 'Boolean'
                       : opt}
                   </SelectItem>
                 ))}
@@ -178,32 +227,35 @@ export const ScorecardVariablesModal: React.FC<PropsModal> = ({
             </Select>
           </div>
 
-          {/* Tip */}
+          {typeModal === 'boolean' ? (
+            <div className="flex flex-col md:flex-row gap-2">
+              <label className="w-full text-blue-700 dark:!text-white">
+                Este adevărat sau fals?
+              </label>
+              <Select
+                value={booleanValue}
+                onValueChange={(val) =>
+                  setBooleanValue(val as 'true' | 'false')
+                }
+              >
+                <SelectTrigger className="w-full border-blue-300 text-blue-950 dark:!text-white focus:outline-none focus:ring-0 focus:ring-offset-0 data-[state=open]:ring-0 data-[state=open]:outline-none">
+                  <SelectValue placeholder="Selectează o opțiune" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="true">Adevărat</SelectItem>
+                  <SelectItem value="false">Fals</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          ) : (
+            ''
+          )}
 
-          <div className="flex flex-col md:flex-row gap-2">
-            <label className="text-md font-semibold w-full">Tip</label>
-            <Select
-              value={type}
-              onValueChange={(val) =>
-                setType(val as "numeric" | "enum" | "boolean")
-              }
-            >
-              <SelectTrigger className="w-full border-blue-300 text-blue-950 shadow-md shadow-indigo-500/50  focus:outline-none focus:ring-0 focus:ring-offset-0 data-[state=open]:ring-0 data-[state=open]:outline-none">
-                <SelectValue placeholder="Selectează tipul" />
-              </SelectTrigger>
-              <SelectContent className="rounded-b-md">
-                <SelectItem value="numeric" className="hover:bg-blue-200">
-                  Numeric
-                </SelectItem>
-                <SelectItem value="enum" className="hover:bg-blue-200">
-                  Enum
-                </SelectItem>
-                <SelectItem value="boolean" className="hover:bg-blue-200">
-                  Boolean
-                </SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
+          {error.typeModal && (
+            <span className="text-red-500 dark:text-red-400 text-[10px] text-end w-full">
+              {error.typeModal}
+            </span>
+          )}
 
           {/* Pondere */}
 
@@ -215,12 +267,12 @@ export const ScorecardVariablesModal: React.FC<PropsModal> = ({
               value={weight}
               onChange={handleWeightChange}
               onBlur={handleWeightBlur}
-              className="w-full border border-blue-300 text-blue-950 px-4 py-1 rounded-md shadow-md shadow-indigo-500/50 no-spinner  focus:outline-none focus:ring-0 focus:ring-offset-0 data-[state=open]:ring-0 data-[state=open]:outline-none"
+              className="w-full border border-blue-300 text-blue-950 dark:text-white dark:bg-slate-800 px-4 py-1 rounded-md no-spinner  focus:outline-none focus:ring-0 focus:ring-offset-0 data-[state=open]:ring-0 data-[state=open]:outline-none"
             />
           </div>
-          {error && (
-            <span className="text-red-500 text-[10px] text-end w-full">
-              {error}
+          {error.weight && (
+            <span className="text-red-500 dark:text-red-400 text-[10px] text-end w-full">
+              {error.weight}
             </span>
           )}
         </div>
@@ -232,84 +284,59 @@ export const ScorecardVariablesModal: React.FC<PropsModal> = ({
           <Checkbox
             checked={active}
             onCheckedChange={() => setActive(!active)}
-            className=" rounded-md w-10 h-8 border-blue-400 md:ml-8 data-[state=checked]:bg-blue-600 data-[state=checked]:border-blue-600 shadow-md shadow-indigo-500/50"
+            className=" rounded-md w-10 h-8 border-2 border-blue-400 data-[state=checked]:dark:bg-blue-400 md:ml-5 data-[state=checked]:bg-blue-600 data-[state=checked]:border-blue-600 "
           />
         </div>
 
         {/* Rules */}
-
-        <div className="flex flex-col md:flex-row gap-2 mt-6">
-          <label className="text-md font-semibold w-full ">Reguli</label>
-
-          {!(isBoolean && rules.length >= 2) && (
-            <button
-              onClick={addRule}
-              className="bg-white border border-blue-300 px-4 py-1 w-full rounded-lg hover:bg-gray-50 shadow-md shadow-indigo-500/50"
-            >
-              Adaugă regulă
-            </button>
-          )}
+        <div className="flex flex-col md:flex-row gap-2 mt-6 ">
+          <label className="text-md font-semibold w-full">Reguli</label>
+          <button
+            onClick={addRules}
+            className="bg-blue-50/30 border border-blue-300 dark:bg-slate-800 hover:dark:bg-slate-700/50 px-4 py-1 w-full rounded-lg hover:bg-gray-50 focus:outline-none "
+          >
+            Adaugă regulă
+          </button>
         </div>
-
-        {rules.length === 0 ? (
-          ""
-        ) : (
-          <div className="space-y-2 mt-4">
-            {rules.map((rule, i) => (
-              <div key={i} className="flex gap-2 items-center">
-                {isBoolean ? (
-                  <select
-                    value={rule.condition}
-                    onChange={(e) => updateRule(i, "condition", e.target.value)}
-                    className="flex-1 border rounded-lg p-2 bg-gray-50"
-                  >
-                    <option value="">Selectează Valoare</option>
-                    <option value="true">Adevărat (True)</option>
-                    <option value="false">Fals (False)</option>
-                  </select>
-                ) : (
-                  <input
-                    type="text"
-                    placeholder={
-                      type === "numeric"
-                        ? "Ex: >5000 sau [2000,5000]"
-                        : "Ex: >5000 sau [2000,5000]"
-                    }
-                    value={rule.condition}
-                    onChange={(e) => updateRule(i, "condition", e.target.value)}
-                    className="flex-1 border rounded-lg p-2"
-                  />
-                )}
+        <div>
+          {rules.map((rule, i) => (
+            <div key={i} className="flex justify-between items-center mt-6">
+              <div className="flex flex-col md:flex-row gap-2">
+                <input
+                  type="text"
+                  placeholder="Ex: >5000 sau [2000,5000]"
+                  value={rule.condition}
+                  onChange={(e) => updateRules(i, 'condition', e.target.value)}
+                  className="flex-1 dark:bg-slate-800 dark:border-slate-300 border w-52 md:w-60 rounded-lg p-2 focus:outline-none focus:border-blue-300"
+                />
                 <input
                   type="number"
-                  placeholder="Scor"
                   value={rule.score}
                   onChange={(e) =>
-                    updateRule(i, "score", parseInt(e.target.value) || 0)
+                    updateRules(i, 'score', parseInt(e.target.value))
                   }
-                  className="w-24 border rounded-lg p-2"
+                  className="w-16 border dark:bg-slate-800 dark:border-slate-300 rounded-lg p-2 no-spinner focus:outline-none focus:border-blue-300 self-end md:self-auto"
                 />
-
-                <button
-                  onClick={() => removeRule(i)}
-                  className="px-2 py-1 bg-red-500 text-white rounded-md hover:bg-red-600"
-                >
-                  Șterge
-                </button>
               </div>
-            ))}
-          </div>
-        )}
-        <div className="flex justify-end mt-6 gap-3">
+              <button
+                onClick={() => removeRule(i)}
+                className="px-2 py-2 bg-blue-100 dark:bg-red-600 dark:text-white hover:dark:bg-red-600/90 text-blue-500 rounded-md hover:bg-blue-200"
+              >
+                Șterge
+              </button>
+            </div>
+          ))}
+        </div>
+        <div className="flex flex-col md:flex-row gap-2 mt-14 center md:justify-between ">
           <button
             onClick={onClose}
-            className="px-4 py-2 rounded-lg border border-gray-300"
+            className="bg-blue-50/30 dark:bg-slate-800 hover:dark:bg-slate-700/50 border border-blue-300 px-4 py-1 rounded-lg hover:bg-gray-50 focus:outline-none "
           >
             Anulează
           </button>
           <button
             onClick={handleSave}
-            className="px-4 py-2 rounded-lg bg-blue-500 text-white"
+            className="bg-blue-500 px-4 py-1 disabled:bg-gray-400 text-white rounded-lg shadow-md hover:bg-blue-500/90"
           >
             Salvează
           </button>

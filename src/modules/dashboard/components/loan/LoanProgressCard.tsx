@@ -26,19 +26,20 @@ export default function LoanProgressCard({
   return (
     <CardWrapper
       title="Progres rambursare"
-      icon={<TrendingUp size={22} className="text-blue-600" />}
+      icon={
+        <TrendingUp size={22} className="text-blue-600 dark:text-blue-300" />
+      }
     >
       <div className="space-y-4">
         <div
-          className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-sm font-medium
-            ${
-              isBehind
-                ? "bg-red-100 text-red-700"
-                : isAlmostDone
-                ? "bg-green-100 text-green-700"
-                : "bg-blue-100 text-blue-700"
-            }
-          `}
+          className={
+            `inline-flex items-center gap-2 px-3 py-1 rounded-full text-sm font-medium ` +
+            (isBehind
+              ? "bg-red-100 text-red-700 dark:bg-red-500/20 dark:text-red-300"
+              : isAlmostDone
+              ? "bg-green-100 text-green-700 dark:bg-green-500/20 dark:text-green-300"
+              : "bg-blue-100 text-blue-700 dark:bg-blue-500/20 dark:text-blue-300")
+          }
         >
           ●{" "}
           {isBehind
@@ -49,13 +50,13 @@ export default function LoanProgressCard({
         </div>
 
         <div>
-          <p className="text-sm text-gray-600 mb-1">
+          <p className="text-sm text-gray-600 dark:text-gray-300 mb-1">
             Progres total: <b>{progress.toFixed(0)}%</b>
           </p>
 
-          <div className="w-full bg-blue-100 rounded-full h-3 overflow-hidden shadow-inner">
+          <div className="w-full bg-blue-100 dark:bg-white/10 rounded-full h-3 overflow-hidden shadow-inner">
             <div
-              className="h-full bg-blue-600 rounded-full transition-all duration-500"
+              className="h-full bg-blue-600 dark:bg-blue-400 rounded-full transition-all duration-500"
               style={{ width: `${progress}%` }}
             />
           </div>
@@ -63,35 +64,39 @@ export default function LoanProgressCard({
 
         <div className="grid grid-cols-2 gap-4 text-sm pt-2">
           <div>
-            <p className="text-gray-500">Total rambursat</p>
-            <p className="text-blue-700 font-semibold">
+            <p className="text-gray-500 dark:text-gray-400">Total rambursat</p>
+            <p className="text-blue-700 dark:text-blue-300 font-semibold">
               {totalPaid.toLocaleString("ro-RO")} RON
             </p>
           </div>
 
           <div>
-            <p className="text-gray-500">Rămas de plată</p>
-            <p className="text-red-600 font-semibold">
+            <p className="text-gray-500 dark:text-gray-400">Rămas de plată</p>
+            <p className="text-red-600 dark:text-red-300 font-semibold">
               {totalRemaining.toLocaleString("ro-RO")} RON
             </p>
           </div>
 
           <div>
-            <p className="text-gray-500">Luni plătite</p>
-            <p className="font-medium text-gray-800">{paidMonths} luni</p>
+            <p className="text-gray-500 dark:text-gray-400">Luni plătite</p>
+            <p className="font-medium text-gray-800 dark:text-gray-200">
+              {paidMonths} luni
+            </p>
           </div>
 
           <div>
-            <p className="text-gray-500">Luni rămase</p>
-            <p className="font-medium text-gray-800">{remainingMonths} luni</p>
+            <p className="text-gray-500 dark:text-gray-400">Luni rămase</p>
+            <p className="font-medium text-gray-800 dark:text-gray-200">
+              {remainingMonths} luni
+            </p>
           </div>
         </div>
 
-        <hr className="border-gray-200 mt-2" />
+        <hr className="border-gray-200 dark:border-white/10 mt-2" />
 
-        <p className="text-xs text-gray-500">
+        <p className="text-xs text-gray-500 dark:text-gray-400">
           Valoare totală credit:{" "}
-          <span className="font-semibold text-gray-700">
+          <span className="font-semibold text-gray-700 dark:text-gray-200">
             {amount.toLocaleString("ro-RO")} RON
           </span>
         </p>

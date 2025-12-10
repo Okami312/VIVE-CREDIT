@@ -94,10 +94,18 @@ export default function PersonalDataStep({
   };
 
   return (
-    <div className="w-full bg-gradient-to-b from-blue-50 to-white p-4">
-      <Card className="w-full max-w-md mx-auto shadow-lg border border-blue-100">
+    <div className="w-full p-4 bg-transparent">
+      <Card
+        className="
+          w-full max-w-md mx-auto
+          shadow-lg 
+          border border-blue-100 dark:border-[#1f2e44]
+          bg-white dark:bg-[#162233]
+          text-gray-900 dark:text-[#c7d5ff]
+        "
+      >
         <CardHeader>
-          <CardTitle className="text-2xl font-semibold text-blue-700">
+          <CardTitle className="text-2xl font-semibold text-blue-700 dark:text-blue-400">
             Pasul 1 — Date personale
           </CardTitle>
         </CardHeader>
@@ -105,23 +113,38 @@ export default function PersonalDataStep({
         <form onSubmit={handleSubmit}>
           <CardContent className="space-y-4">
             <div>
-              <Label htmlFor="fullName">Nume complet</Label>
+              <Label htmlFor="fullName" className="dark:text-[#c7d5ff]">
+                Nume complet
+              </Label>
+
               <Input
                 id="fullName"
                 name="fullName"
                 placeholder="Ex: Popescu Andrei"
                 value={formData.fullName}
                 onChange={handleChange}
-                className={errors.fullName ? "border-red-500" : ""}
-                required
+                className={`
+                  bg-white dark:bg-[#0c1324]
+                  text-gray-900 dark:text-[#c7d5ff]
+                  border
+                  ${
+                    errors.fullName
+                      ? "border-red-500 dark:border-red-400"
+                      : "border-gray-300 dark:border-[#243247]"
+                  }
+                `}
               />
+
               {errors.fullName && (
                 <p className="text-red-500 text-sm mt-1">{errors.fullName}</p>
               )}
             </div>
 
             <div>
-              <Label htmlFor="cnp">CNP</Label>
+              <Label htmlFor="cnp" className="dark:text-[#c7d5ff]">
+                CNP
+              </Label>
+
               <Input
                 id="cnp"
                 name="cnp"
@@ -129,16 +152,28 @@ export default function PersonalDataStep({
                 maxLength={13}
                 value={formData.cnp}
                 onChange={handleChange}
-                className={errors.cnp ? "border-red-500" : ""}
-                required
+                className={`
+                  bg-white dark:bg-[#0c1324]
+                  text-gray-900 dark:text-[#c7d5ff]
+                  border
+                  ${
+                    errors.cnp
+                      ? "border-red-500 dark:border-red-400"
+                      : "border-gray-300 dark:border-[#243247]"
+                  }
+                `}
               />
+
               {errors.cnp && (
                 <p className="text-red-500 text-sm mt-1">{errors.cnp}</p>
               )}
             </div>
 
             <div>
-              <Label htmlFor="email">Email</Label>
+              <Label htmlFor="email" className="dark:text-[#c7d5ff]">
+                Email
+              </Label>
+
               <Input
                 id="email"
                 name="email"
@@ -146,9 +181,18 @@ export default function PersonalDataStep({
                 placeholder="exemplu@email.com"
                 value={formData.email}
                 onChange={handleChange}
-                className={errors.email ? "border-red-500" : ""}
-                required
+                className={`
+                  bg-white dark:bg-[#0c1324]
+                  text-gray-900 dark:text-[#c7d5ff]
+                  border
+                  ${
+                    errors.email
+                      ? "border-red-500 dark:border-red-400"
+                      : "border-gray-300 dark:border-[#243247]"
+                  }
+                `}
               />
+
               {errors.email && (
                 <p className="text-red-500 text-sm mt-1">{errors.email}</p>
               )}
@@ -159,11 +203,14 @@ export default function PersonalDataStep({
             <Button
               type="submit"
               disabled={!isValid}
-              className={`px-6 text-white ${
-                isValid
-                  ? "bg-blue-600 hover:bg-blue-700"
-                  : "bg-gray-400 cursor-not-allowed"
-              }`}
+              className={`
+                px-6 text-white
+                ${
+                  isValid
+                    ? "bg-blue-600 hover:bg-blue-700"
+                    : "bg-gray-500 dark:bg-gray-700 cursor-not-allowed"
+                }
+              `}
             >
               Continuă
             </Button>

@@ -1,49 +1,147 @@
+import { Route, Routes, Navigate } from "react-router-dom";
+
+/* Public pages */
+import LandingPage from "@/modules/landing/pages/LandingPage";
+import ProductsPage from "@/modules/static/pages/ProductsPage";
+import AboutPage from "@/modules/static/pages/AboutPage";
+import ContactPage from "@/modules/static/pages/ContactPage";
+import TermsPage from "@/modules/static/pages/TermsPage";
+import PrivacyPage from "@/modules/static/pages/PrivacyPage";
+import AnpcPage from "@/modules/static/pages/AnpcPage";
+import CookiePolicyPage from "@/modules/static/pages/CookiePolicyPage";
+
+/* Layout Public */
+import PublicLayout from "@/modules/landing/layout/PublicLayout";
+
+/* Auth */
+import LoginPage from "@/modules/auth/pages/LoginPage";
+
+/* Onboarding */
+import OnboardingPage from "@/modules/onboarding/pages/OnboardingPage";
+import SuccessPage from "@/modules/onboarding/pages/SuccessPage";
+
+/* Dashboard Client */
 import DashboardPage from "@/modules/dashboard/pages/DashboardPage";
-import { AuditDashboard } from "@/modules/admin-audit/AuditDashboard";
 import DocumentsPage from "@/modules/dashboard/pages/DocumentsPage";
 import LoanPage from "@/modules/dashboard/pages/LoanPage";
 import PaymentsPage from "@/modules/dashboard/pages/PaymentsPage";
-import OnboardingPage from "@/modules/onboarding/pages/OnboardingPage";
-import SuccessPage from "@/modules/onboarding/pages/SuccessPage";
-import { PolicyEnginePage } from "@/modules/scoring";
+import LoanForm from "@/pages/loan/LoanForm";
+
+/* Operator Dashboard */
 import OperatorDashboardLayout from "@/modules/operator-dashboard/layout/OperatorDashboardLayout";
 import OperatorDashboardPage from "@/modules/operator-dashboard/pages/OperatorDasboardPage";
 import RiskPage from "@/modules/operator-dashboard/pages/RiskPage";
-import { Route, Routes, Navigate } from "react-router-dom";
-import LoanForm from "@/pages/loan/LoanForm";
+import SalesDashboard from "@/modules/operator-dashboard/submodules/sales/SalesDashboard";
+import ApplicationDetail from "@/modules/operator-dashboard/submodules/sales/ApplicationDetail";
+
+/* Engines */
+import { PolicyEnginePage } from "@/modules/scoring";
 import DecisionPage from "@/modules/decision-engine/Pages/DecisionPage";
+import { ScorecardEngine } from "@/modules/scoring/pages/ScorecardEngine";
+import { AuditDashboard } from "@/modules/admin-audit/AuditDashboard";
+
+/* Protected route */
+import ProtectedRoute from "@/components/ProtectedRoute";
 
 const AppRoutes = () => {
   return (
     <Routes>
-      {/* Root */}
-      <Route path="/" element={<div />} />
-      
-      {/* Onboarding */}
+      {/* PUBLIC ROUTES with layout */}
+      <Route element={<PublicLayout />}>
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/products" element={<ProductsPage />} />
+        <Route path="/about" element={<AboutPage />} />
+        <Route path="/contact" element={<ContactPage />} />
+
+        {/* Legal pages */}
+        <Route path="/terms" element={<TermsPage />} />
+        <Route path="/privacy" element={<PrivacyPage />} />
+        <Route path="/anpc" element={<AnpcPage />} />
+        <Route path="/cookies" element={<CookiePolicyPage />} />
+      </Route>
+
+      {/* AUTH */}
+      <Route path="/login" element={<LoginPage />} />
+
+      {/* ONBOARDING */}
       <Route path="/onboarding" element={<OnboardingPage />} />
       <Route path="/onboarding/success" element={<SuccessPage />} />
-      
-      {/* Dashboard */}
-      <Route path="/dashboard" element={<DashboardPage />} />
-      <Route path="/dashboard/loan" element={<LoanPage />} />
-      <Route path="/dashboard/payments" element={<PaymentsPage />} />
-      <Route path="/dashboard/documents" element={<DocumentsPage />} />
-      <Route path="/dashboard/loan-form" element={<LoanForm />} />
-      
-      {/* OPERATOR DASHBOARD SALES/RISK/COLLECTIONS */}
-      <Route path="/operator" element={<OperatorDashboardLayout />}>
+
+      {/* CLIENT DASHBOARD */}
+      <Route
+        path="/dashboard"
+        element={
+          <ProtectedRoute allowedRoles={["client"]}>
+            <DashboardPage />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/dashboard/loan"
+        element={
+          <ProtectedRoute allowedRoles={["client"]}>
+            <LoanPage />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/dashboard/payments"
+        element={
+          <ProtectedRoute allowedRoles={["client"]}>
+            <PaymentsPage />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/dashboard/documents"
+        element={
+          <ProtectedRoute allowedRoles={["client"]}>
+            <DocumentsPage />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/dashboard/loan-form"
+        element={
+          <ProtectedRoute allowedRoles={["client"]}>
+            <LoanForm />
+          </ProtectedRoute>
+        }
+      />
+
+      {/* OPERATOR DASHBOARD */}
+      <Route
+        path="/operator"
+        element={
+          <ProtectedRoute allowedRoles={["operator"]}>
+            <OperatorDashboardLayout />
+          </ProtectedRoute>
+        }
+      >
         <Route index element={<OperatorDashboardPage />} />
         <Route path="risk" element={<RiskPage />} />
-        {/* <Route path="sales" element={<SalesPage />} /> */}
-        {/* <Route path="collection" element={<CollectionPage />} /> */}
+        <Route path="sales" element={<SalesDashboard />} />
+        <Route path="sales/:id" element={<ApplicationDetail />} />
+
+        <Route path="policy-engine" element={<PolicyEnginePage />} />
+        <Route path="decision-engine" element={<DecisionPage />} />
+        <Route path="scorecard" element={<ScorecardEngine />} />
       </Route>
-      
-      {/* Policy Engine / Decision Engine */}
-      <Route path="/policy-engine" element={<PolicyEnginePage />} />
-      <Route path="/decision-engine" element={<DecisionPage />} />
-      <Route path="/audit" element={<AuditDashboard />} />
-      
-      {/* Fallback */}
+
+      <Route
+        path="/audit"
+        element={
+          <ProtectedRoute allowedRoles={["operator"]}>
+            <AuditDashboard />
+          </ProtectedRoute>
+        }
+      />
+
+      {/* FALLBACK */}
       <Route path="*" element={<Navigate to="/" replace />} />
 
       {/* Policy Engine */}

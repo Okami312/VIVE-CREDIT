@@ -6,11 +6,7 @@ interface LoanSummaryCardProps {
   interest: number;
   termMonths: number;
   monthlyRate: number;
-  lastPayment: {
-    date: string;
-    amount: number;
-    method: string;
-  };
+  lastPayment: { date: string; amount: number; method: string };
   status: string;
 }
 
@@ -25,18 +21,18 @@ export default function LoanSummaryCard({
   return (
     <CardWrapper
       title="Detalii împrumut"
-      icon={<TrendingUp size={22} className="text-blue-600" />}
+      icon={
+        <TrendingUp size={22} className="text-blue-600 dark:text-blue-300" />
+      }
     >
       <div className="mb-4">
         <span
-          className={`
-            px-3 py-1 text-xs font-medium rounded-full
-            ${
-              status === "active"
-                ? "bg-green-100 text-green-700"
-                : "bg-gray-200 text-gray-600"
-            }
-          `}
+          className={
+            `px-3 py-1 text-xs font-medium rounded-full ` +
+            (status === "active"
+              ? "bg-green-100 text-green-700 dark:bg-green-500/20 dark:text-green-300"
+              : "bg-gray-200 text-gray-600 dark:bg-gray-700 dark:text-gray-300")
+          }
         >
           {status === "active" ? "Activ" : "Finalizat"}
         </span>
@@ -44,38 +40,42 @@ export default function LoanSummaryCard({
 
       <div className="grid grid-cols-2 gap-4 text-sm">
         <div className="space-y-1">
-          <p className="text-gray-500">Suma acordată</p>
-          <p className="font-semibold text-gray-800">
+          <p className="text-gray-500 dark:text-gray-400">Suma acordată</p>
+          <p className="font-semibold text-gray-800 dark:text-gray-200">
             {amount.toLocaleString("ro-RO")} RON
           </p>
         </div>
 
         <div className="space-y-1">
-          <p className="text-gray-500">Rată lunară</p>
-          <p className="font-semibold text-gray-800">
+          <p className="text-gray-500 dark:text-gray-400">Rată lunară</p>
+          <p className="font-semibold text-gray-800 dark:text-gray-200">
             {monthlyRate.toLocaleString("ro-RO")} RON
           </p>
         </div>
 
         <div className="space-y-1">
-          <p className="text-gray-500">Dobândă</p>
-          <p className="font-semibold text-gray-800">{interest}%</p>
+          <p className="text-gray-500 dark:text-gray-400">Dobândă</p>
+          <p className="font-semibold text-gray-800 dark:text-gray-200">
+            {interest}%
+          </p>
         </div>
 
         <div className="space-y-1">
-          <p className="text-gray-500">Durată</p>
-          <p className="font-semibold text-gray-800">{termMonths} luni</p>
+          <p className="text-gray-500 dark:text-gray-400">Durată</p>
+          <p className="font-semibold text-gray-800 dark:text-gray-200">
+            {termMonths} luni
+          </p>
         </div>
       </div>
 
-      <hr className="my-4 border-gray-200" />
+      <hr className="my-4 border-gray-200 dark:border-white/10" />
 
       <div className="space-y-1">
-        <p className="text-gray-500">Ultima plată</p>
-        <p className="font-medium text-gray-800">
+        <p className="text-gray-500 dark:text-gray-400">Ultima plată</p>
+        <p className="font-medium text-gray-800 dark:text-gray-200">
           {lastPayment.date} • {lastPayment.amount.toLocaleString("ro-RO")} RON
         </p>
-        <span className="text-xs text-gray-500">
+        <span className="text-xs text-gray-500 dark:text-gray-400">
           Metodă: {lastPayment.method}
         </span>
       </div>

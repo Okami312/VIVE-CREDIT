@@ -9,8 +9,10 @@ export default function DocumentsPage() {
     <DashboardLayout>
       <div className="space-y-6">
         <div>
-          <h1 className="text-2xl font-bold text-blue-700">Documentele mele</h1>
-          <p className="text-sm text-gray-600 mt-1">
+          <h1 className="text-2xl font-bold text-blue-700 dark:text-blue-300">
+            Documentele mele
+          </h1>
+          <p className="text-sm text-gray-600 dark:text-gray-300 mt-1">
             Aici găsești toate documentele tale de credit: contractul semnat,
             graficul de rambursare și actele încărcate pentru verificare.
           </p>

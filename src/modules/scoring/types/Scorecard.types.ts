@@ -6,6 +6,8 @@ export const variableOptions = [
   'kyc',
 ] as const;
 
+export const typesOptions = ['numeric', 'enum', 'boolean'] as const;
+
 export type Rule = {
   condition: string;
   score: number;
@@ -18,6 +20,7 @@ export type Variable = {
   weight: number;
   active: boolean;
   rules: Rule[];
+  booleanV?: 'true' | 'false';
 };
 
 export type PropsModal = {

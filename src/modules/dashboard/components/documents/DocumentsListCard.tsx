@@ -12,17 +12,11 @@ interface Props {
   documents: DocumentItem[];
 }
 
-const formatSize = (kb: number): string => {
-  if (kb >= 1024) {
-    return `${(kb / 1024).toFixed(1)} MB`;
-  }
-  return `${kb} KB`;
-};
-
+const formatSize = (kb: number): string =>
+  kb >= 1024 ? `${(kb / 1024).toFixed(1)} MB` : `${kb} KB`;
 const formatDate = (value: string): string => {
   const d = new Date(value);
-  if (Number.isNaN(d.getTime())) return value;
-  return d.toLocaleDateString("ro-RO");
+  return Number.isNaN(d.getTime()) ? value : d.toLocaleDateString("ro-RO");
 };
 
 const categoryLabel: Record<DocumentItem["category"], string> = {
@@ -38,23 +32,20 @@ export default function DocumentsListCard({ documents }: Props) {
     switch (status) {
       case "available":
         return (
-          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-green-100 text-green-700 text-[11px] font-medium">
-            <BadgeCheck size={14} />
-            Disponibil
+          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-green-100 text-green-700 text-[11px] font-medium dark:bg-green-500/20 dark:text-green-300">
+            <BadgeCheck size={14} className="dark:text-green-300" /> Disponibil
           </span>
         );
       case "processing":
         return (
-          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-yellow-100 text-yellow-700 text-[11px] font-medium">
-            <Clock size={14} />
-            În prelucrare
+          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-yellow-100 text-yellow-700 text-[11px] font-medium dark:bg-yellow-500/20 dark:text-yellow-300">
+            <Clock size={14} className="dark:text-yellow-300" /> În prelucrare
           </span>
         );
       case "expired":
         return (
-          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-red-100 text-red-700 text-[11px] font-medium">
-            <AlertTriangle size={14} />
-            Expirat
+          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-red-100 text-red-700 text-[11px] font-medium dark:bg-red-500/20 dark:text-red-300">
+            <AlertTriangle size={14} className="dark:text-red-300" /> Expirat
           </span>
         );
     }
@@ -63,33 +54,39 @@ export default function DocumentsListCard({ documents }: Props) {
   return (
     <CardWrapper
       title="Documentele mele"
-      icon={<FileText size={22} className="text-blue-600" />}
+      icon={<FileText size={22} className="text-blue-600 dark:text-blue-300" />}
     >
       <div className="space-y-3">
         {documents.map((doc) => (
           <div
             key={doc.id}
-            className="bg-blue-50/60 border border-blue-100 rounded-xl px-3 py-3 sm:px-4 sm:py-3 flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4 hover:bg-blue-50 transition"
+            className="
+              bg-blue-50/60 border border-blue-100 rounded-xl px-3 py-3 sm:px-4 sm:py-3 
+              flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4 hover:bg-blue-50 transition
+              dark:bg-[#2A3B55A6] dark:border-white/10 dark:hover:bg-[#2A3B55CC]
+            "
           >
             <div className="flex items-start gap-3 flex-1 min-w-0">
               <div className="mt-0.5">
-                <FileText className="text-blue-600" size={22} />
+                <FileText
+                  size={22}
+                  className="text-blue-600 dark:text-blue-300"
+                />
               </div>
 
               <div className="min-w-0">
-                <p className="font-medium text-gray-900 text-sm sm:text-base truncate">
+                <p className="font-medium text-gray-900 dark:text-gray-100 text-sm sm:text-base truncate">
                   {doc.name}
                 </p>
-
-                <p className="text-[11px] sm:text-xs text-blue-700 mt-0.5">
+                <p className="text-[11px] sm:text-xs text-blue-700 dark:text-blue-300 mt-0.5">
                   {categoryLabel[doc.category]}
                 </p>
 
-                <div className="flex flex-wrap items-center gap-2 mt-1 text-[11px] sm:text-xs text-gray-500">
+                <div className="flex flex-wrap items-center gap-2 mt-1 text-[11px] sm:text-xs text-gray-500 dark:text-gray-400">
                   <span>{formatDate(doc.uploadedAt)}</span>
-                  <span className="w-1 h-1 rounded-full bg-gray-300" />
+                  <span className="w-1 h-1 rounded-full bg-gray-300 dark:bg-gray-500" />
                   <span>{formatSize(doc.sizeKb)}</span>
-                  <span className="w-1 h-1 rounded-full bg-gray-300" />
+                  <span className="w-1 h-1 rounded-full bg-gray-300 dark:bg-gray-500" />
                   {getStatusBadge(doc.status)}
                 </div>
               </div>
@@ -100,15 +97,23 @@ export default function DocumentsListCard({ documents }: Props) {
                 <a
                   href={doc.url}
                   download
-                  className="inline-flex items-center gap-2 px-3 py-2 rounded-lg bg-white text-blue-700 text-xs sm:text-sm border border-blue-100 hover:bg-blue-600 hover:text-white transition shadow-sm"
+                  className="
+                    inline-flex items-center gap-2 px-3 py-2 rounded-lg bg-white text-blue-700 
+                    text-xs sm:text-sm border border-blue-100 shadow-sm hover:bg-blue-600 hover:text-white transition
+                    dark:bg-[#1C2534] dark:text-blue-300 dark:border-white/10 dark:hover:bg-blue-500
+                  "
                 >
-                  <Download size={16} />
+                  <Download size={16} className="dark:text-blue-300" />
                   <span>Descarcă</span>
                 </a>
               ) : (
                 <button
                   disabled
-                  className="inline-flex items-center gap-2 px-3 py-2 rounded-lg bg-gray-100 text-gray-400 text-xs sm:text-sm border border-gray-200 cursor-not-allowed"
+                  className="
+                    inline-flex items-center gap-2 px-3 py-2 rounded-lg bg-gray-100 text-gray-400 
+                    text-xs sm:text-sm border border-gray-200 cursor-not-allowed
+                    dark:bg-gray-700 dark:text-gray-500 dark:border-white/10
+                  "
                 >
                   <Download size={16} />
                   <span>Indisponibil</span>
@@ -119,7 +124,7 @@ export default function DocumentsListCard({ documents }: Props) {
         ))}
 
         {documents.length === 0 && (
-          <p className="text-sm text-gray-500 italic">
+          <p className="text-sm text-gray-500 dark:text-gray-400 italic">
             Nu există documente care să corespundă filtrelor selectate.
           </p>
         )}

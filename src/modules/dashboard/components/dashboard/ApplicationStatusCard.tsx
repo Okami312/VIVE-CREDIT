@@ -57,12 +57,17 @@ export default function ApplicationStatusCard({
       <div className="space-y-4">
         {renderStatus()}
 
-        <div className="bg-blue-50 border border-blue-100 rounded-lg p-3">
-          <p className="text-sm text-blue-700">Număr cerere:</p>
-          <p className="text-lg font-semibold text-blue-900">{applicationId}</p>
+        <div className="bg-blue-50 border border-blue-100 rounded-lg p-3 dark:bg-[#2A3B55A6] dark:border-white/10">
+          <p className="text-sm text-blue-700 dark:text-gray-300">
+            Număr cerere:
+          </p>
+
+          <p className="text-lg font-semibold text-blue-900 dark:text-white">
+            {applicationId}
+          </p>
         </div>
 
-        <p className="text-gray-600 text-sm">
+        <p className="text-gray-600 dark:text-gray-300 text-sm">
           Vei primi notificare imediat ce cererea ta avansează către următorul
           stadiu.
         </p>

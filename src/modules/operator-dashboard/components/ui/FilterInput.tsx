@@ -1,23 +1,19 @@
-interface FilterInputProps {
+interface Props {
   value: string;
   placeholder?: string;
   onChange: (value: string) => void;
-  className?: string;
 }
-
 export default function FilterInput({
   value,
-  placeholder,
+  placeholder = "",
   onChange,
-  className,
-}: FilterInputProps) {
+}: Props) {
   return (
     <input
-      type="text"
       value={value}
-      placeholder={placeholder}
       onChange={(e) => onChange(e.target.value)}
-      className={` flex-1 border border-gray-300 rounded-xl px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 hover:ring-2 hover:ring-blue-300 transition duration-200 text-gray-500 w-full ${className}`}
+      placeholder={placeholder}
+      className="px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-100 w-full"
     />
   );
 }

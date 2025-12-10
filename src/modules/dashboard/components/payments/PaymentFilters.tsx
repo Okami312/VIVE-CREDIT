@@ -20,7 +20,6 @@ export default function PaymentFilters({ payments }: Props) {
     const methodMatch = method === "all" || p.method === method;
     const monthMatch =
       month === "all" || new Date(p.date).toISOString().slice(0, 7) === month;
-
     return statusMatch && methodMatch && monthMatch;
   });
 
@@ -30,83 +29,105 @@ export default function PaymentFilters({ payments }: Props) {
         className="
           bg-white p-4 md:p-5 rounded-xl shadow-sm border border-gray-200 
           grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6
+          dark:bg-[#1C2534]/60 dark:border-white/10
         "
       >
         <div className="flex flex-col gap-2">
-          <label className="text-sm font-semibold text-indigo-700">
+          <label className="text-sm font-semibold text-indigo-700 dark:text-indigo-300">
             Status
           </label>
           <select
             className="
-              px-3 py-2 rounded-lg border 
-              bg-gray-50 text-gray-700 font-medium
-              focus:outline-none focus:ring-2 focus:ring-indigo-500 
-              hover:bg-white transition
+              px-3 py-2 rounded-lg border bg-gray-50 text-gray-700 font-medium
+              focus:outline-none focus:ring-2 focus:ring-indigo-500 hover:bg-white transition
+              dark:bg-[#2A3B55A6] dark:text-gray-200 dark:border-white/10 dark:hover:bg-[#1C2534]
             "
             value={status}
             onChange={(e) => setStatus(e.target.value as PaymentStatus | "all")}
           >
-            <option value="all" className="text-gray-500">
+            <option value="all" className="text-gray-500 dark:text-gray-300">
               Toate statusurile
             </option>
-            <option value="completed" className="text-green-600 font-semibold">
+            <option
+              value="completed"
+              className="text-green-600 dark:text-green-300 font-semibold"
+            >
               Finalizate
             </option>
-            <option value="pending" className="text-yellow-600 font-semibold">
+            <option
+              value="pending"
+              className="text-yellow-600 dark:text-yellow-300 font-semibold"
+            >
               În procesare
             </option>
-            <option value="failed" className="text-red-600 font-semibold">
+            <option
+              value="failed"
+              className="text-red-600 dark:text-red-300 font-semibold"
+            >
               Eșuate
             </option>
           </select>
         </div>
 
         <div className="flex flex-col gap-2">
-          <label className="text-sm font-semibold text-indigo-700">
+          <label className="text-sm font-semibold text-indigo-700 dark:text-indigo-300">
             Metodă
           </label>
           <select
             className="
-              px-3 py-2 rounded-lg border 
-              bg-gray-50 text-gray-700 font-medium
-              focus:outline-none focus:ring-2 focus:ring-indigo-500 
-              hover:bg-white transition
+              px-3 py-2 rounded-lg border bg-gray-50 text-gray-700 font-medium
+              focus:outline-none focus:ring-2 focus:ring-indigo-500 hover:bg-white transition
+              dark:bg-[#2A3B55A6] dark:text-gray-200 dark:border-white/10 dark:hover:bg-[#1C2534]
             "
             value={method}
             onChange={(e) => setMethod(e.target.value as PaymentMethod | "all")}
           >
-            <option value="all" className="text-gray-500">
+            <option value="all" className="text-gray-500 dark:text-gray-300">
               Toate metodele
             </option>
-            <option value="Card" className="text-indigo-600 font-semibold">
+            <option
+              value="Card"
+              className="text-indigo-600 dark:text-indigo-300 font-semibold"
+            >
               Card
             </option>
-            <option value="Transfer" className="text-blue-600 font-semibold">
+            <option
+              value="Transfer"
+              className="text-blue-600 dark:text-blue-300 font-semibold"
+            >
               Transfer
             </option>
-            <option value="Cash" className="text-orange-600 font-semibold">
+            <option
+              value="Cash"
+              className="text-orange-600 dark:text-orange-300 font-semibold"
+            >
               Cash
             </option>
           </select>
         </div>
 
         <div className="flex flex-col gap-2">
-          <label className="text-sm font-semibold text-indigo-700">Lună</label>
+          <label className="text-sm font-semibold text-indigo-700 dark:text-indigo-300">
+            Lună
+          </label>
           <select
             className="
-              px-3 py-2 rounded-lg border 
-              bg-gray-50 text-gray-700 font-medium
-              focus:outline-none focus:ring-2 focus:ring-indigo-500 
-              hover:bg-white transition
+              px-3 py-2 rounded-lg border bg-gray-50 text-gray-700 font-medium
+              focus:outline-none focus:ring-2 focus:ring-indigo-500 hover:bg-white transition
+              dark:bg-[#2A3B55A6] dark:text-gray-200 dark:border-white/10 dark:hover:bg-[#1C2534]
             "
             value={month}
             onChange={(e) => setMonth(e.target.value)}
           >
-            <option value="all" className="text-gray-500">
+            <option value="all" className="text-gray-500 dark:text-gray-300">
               Toate lunile
             </option>
             {[...new Set(payments.map((p) => p.date.slice(0, 7)))].map((m) => (
-              <option key={m} value={m} className="font-semibold">
+              <option
+                key={m}
+                value={m}
+                className="font-semibold dark:text-gray-200"
+              >
                 {m}
               </option>
             ))}

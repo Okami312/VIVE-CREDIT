@@ -1,34 +1,18 @@
-import type { ReactNode } from "react";
-
-interface UiCardProps {
-  label?: string;
-  value?: number | string;
-  icon?: ReactNode;
-  className?: string;
-  children?: ReactNode;
+interface Props {
+  icon?: React.ReactNode;
+  label: string;
+  value: number | string;
 }
-export default function UiCard({
-  label,
-  value,
-  icon,
-  className,
-  children,
-}: UiCardProps) {
+export default function UiCard({ icon, label, value }: Props) {
   return (
-    <div
-      className={`bg-white shadow-md rounded-2xl p-4 flex items-center gap-4 border hover:shadow-lg transition ${className}`}
-    >
-      {icon && (
-        <div className="p-3 bg-blue-100 text-blue-600 rounded-xl">{icon}</div>
-      )}
-      {children ? (
-        <div className="flex flex-col flex-1">{children}</div>
-      ) : (
-        <div>
-          <p className="text-gray-500 text-sm">{label}</p>
-          <p className="text-xl font-semibold text-gray-500">{value}</p>
+    <div className="p-4 bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm flex items-center gap-3">
+      <div className="text-blue-600">{icon}</div>
+      <div>
+        <div className="text-sm text-gray-500 dark:text-gray-400">{label}</div>
+        <div className="text-xl font-semibold text-gray-800 dark:text-gray-100">
+          {value}
         </div>
-      )}
+      </div>
     </div>
   );
 }

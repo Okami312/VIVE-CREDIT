@@ -99,10 +99,10 @@ export default function WorkDataStep({
   };
 
   return (
-    <div className="w-full bg-gradient-to-b from-blue-50 to-white p-4">
-      <Card className="w-full max-w-md mx-auto shadow-lg border border-blue-100">
+    <div className="w-full p-4 bg-transparent">
+      <Card className="w-full max-w-md mx-auto shadow-lg border border-blue-100 dark:border-[#1f2e44] bg-white dark:bg-[#162233] text-gray-900 dark:text-[#c7d5ff]">
         <CardHeader>
-          <CardTitle className="text-2xl font-semibold text-blue-700">
+          <CardTitle className="text-2xl font-semibold text-blue-700 dark:text-blue-400">
             Pasul 3 — Loc de muncă
           </CardTitle>
         </CardHeader>
@@ -110,15 +110,20 @@ export default function WorkDataStep({
         <form onSubmit={handleSubmit}>
           <CardContent className="space-y-4">
             <div>
-              <Label htmlFor="company">Nume companie</Label>
+              <Label htmlFor="company" className="dark:text-[#c7d5ff]">
+                Nume companie
+              </Label>
               <Input
                 id="company"
                 name="company"
                 placeholder="Ex: Tech Solutions SRL"
                 value={formData.company}
                 onChange={handleChange}
-                className={errors.company ? "border-red-500" : ""}
-                required
+                className={`bg-white dark:bg-[#0c1324] text-gray-900 dark:text-[#c7d5ff] border ${
+                  errors.company
+                    ? "border-red-500 dark:border-red-400"
+                    : "border-gray-300 dark:border-[#243247]"
+                }`}
               />
               {errors.company && (
                 <p className="text-red-500 text-sm mt-1">{errors.company}</p>
@@ -126,15 +131,20 @@ export default function WorkDataStep({
             </div>
 
             <div>
-              <Label htmlFor="position">Funcție / Ocupație</Label>
+              <Label htmlFor="position" className="dark:text-[#c7d5ff]">
+                Funcție / Ocupație
+              </Label>
               <Input
                 id="position"
                 name="position"
                 placeholder="Ex: Dezvoltator software"
                 value={formData.position}
                 onChange={handleChange}
-                className={errors.position ? "border-red-500" : ""}
-                required
+                className={`bg-white dark:bg-[#0c1324] text-gray-900 dark:text-[#c7d5ff] border ${
+                  errors.position
+                    ? "border-red-500 dark:border-red-400"
+                    : "border-gray-300 dark:border-[#243247]"
+                }`}
               />
               {errors.position && (
                 <p className="text-red-500 text-sm mt-1">{errors.position}</p>
@@ -142,7 +152,9 @@ export default function WorkDataStep({
             </div>
 
             <div>
-              <Label htmlFor="income">Venit lunar NET (RON)</Label>
+              <Label htmlFor="income" className="dark:text-[#c7d5ff]">
+                Venit lunar NET (RON)
+              </Label>
               <Input
                 id="income"
                 name="income"
@@ -151,8 +163,11 @@ export default function WorkDataStep({
                 min="1"
                 value={formData.income}
                 onChange={handleChange}
-                className={errors.income ? "border-red-500" : ""}
-                required
+                className={`bg-white dark:bg-[#0c1324] text-gray-900 dark:text-[#c7d5ff] border ${
+                  errors.income
+                    ? "border-red-500 dark:border-red-400"
+                    : "border-gray-300 dark:border-[#243247]"
+                }`}
               />
               {errors.income && (
                 <p className="text-red-500 text-sm mt-1">{errors.income}</p>
@@ -160,7 +175,9 @@ export default function WorkDataStep({
             </div>
 
             <div>
-              <Label htmlFor="experience">Experiență (ani)</Label>
+              <Label htmlFor="experience" className="dark:text-[#c7d5ff]">
+                Experiență (ani)
+              </Label>
               <Input
                 id="experience"
                 name="experience"
@@ -169,8 +186,11 @@ export default function WorkDataStep({
                 min="0"
                 value={formData.experience}
                 onChange={handleChange}
-                className={errors.experience ? "border-red-500" : ""}
-                required
+                className={`bg-white dark:bg-[#0c1324] text-gray-900 dark:text-[#c7d5ff] border ${
+                  errors.experience
+                    ? "border-red-500 dark:border-red-400"
+                    : "border-gray-300 dark:border-[#243247]"
+                }`}
               />
               {errors.experience && (
                 <p className="text-red-500 text-sm mt-1">{errors.experience}</p>
@@ -183,17 +203,18 @@ export default function WorkDataStep({
               type="button"
               variant="outline"
               onClick={onBack}
-              className="px-6"
+              className="px-6 dark:border-[#243247] dark:text-[#c7d5ff]"
             >
               ⬅ Înapoi
             </Button>
+
             <Button
               type="submit"
               disabled={!isValid}
               className={`px-6 text-white ${
                 isValid
                   ? "bg-blue-600 hover:bg-blue-700"
-                  : "bg-gray-400 cursor-not-allowed"
+                  : "bg-gray-500 dark:bg-gray-700 cursor-not-allowed"
               }`}
             >
               Continuă

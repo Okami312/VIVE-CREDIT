@@ -4,7 +4,6 @@ import {
   FileText,
   CreditCard,
   Clock,
-  LogOut,
   Menu,
   X,
   Sun,
@@ -12,6 +11,7 @@ import {
 } from "lucide-react";
 import { NavLink } from "react-router-dom";
 import { useTheme } from "@/context/ThemeContext";
+import UserBadge from "@/components/UserBadge";
 
 export default function DashboardLayout({ children }: { children: ReactNode }) {
   const [open, setOpen] = useState(false);
@@ -21,14 +21,28 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
     "flex items-center gap-3 px-3 py-2 rounded-lg transition font-medium";
 
   return (
-    <div className="flex min-h-screen bg-gray-50 items-stretch dark:bg-gray-900">
+    <div className="flex h-screen bg-gray-50 dark:bg-gray-900">
       <div className="md:hidden fixed top-0 left-0 w-full bg-white dark:bg-gray-800 shadow-sm z-30 p-4 flex items-center justify-between">
         <h2 className="text-xl font-bold text-blue-600 dark:text-blue-400">
-          Vive Credit
+          VIVE CREDIT
         </h2>
-        <button onClick={() => setOpen(true)}>
-          <Menu size={28} className="text-blue-600 dark:text-blue-400" />
-        </button>
+
+        <div className="flex items-center gap-3">
+          <button
+            onClick={toggleTheme}
+            className="p-2 rounded-full bg-gray-100 dark:bg-gray-700"
+          >
+            {theme === "light" ? (
+              <Sun size={22} className="text-blue-600" />
+            ) : (
+              <Moon size={22} className="text-blue-300" />
+            )}
+          </button>
+
+          <button onClick={() => setOpen(true)}>
+            <Menu size={28} className="text-blue-600 dark:text-blue-400" />
+          </button>
+        </div>
       </div>
 
       {open && (
@@ -40,13 +54,10 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
 
       <aside
         className={`
-          fixed md:relative z-50
-          top-0 left-0
-          w-64
-          min-h-screen
-          bg-white dark:bg-gray-800
+          fixed md:relative z-50 top-0 left-0 w-64 h-screen
+          bg-white dark:bg-gray-800 
           border-r border-gray-200 dark:border-gray-700 
-          p-6 flex flex-col shadow-sm
+          p-6 flex flex-col 
           transition-transform duration-300
           ${open ? "translate-x-0" : "-translate-x-full md:translate-x-0"}
         `}
@@ -59,17 +70,14 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
           <span className="text-gray-700 dark:text-gray-300">Închide</span>
         </button>
 
-        <div className="flex items-center justify-between mb-6">
+        <div className="flex items-center justify-between mb-8">
           <h2 className="text-2xl font-bold text-blue-600 dark:text-blue-400 hidden md:block">
-            Vive Credit
+            VIVE CREDIT
           </h2>
 
           <button
             onClick={toggleTheme}
-            className="p-3 rounded-full 
-              bg-gray-100 hover:bg-gray-200 
-              dark:bg-gray-700 dark:hover:bg-gray-600 
-              transition shadow-sm"
+            className="p-3 rounded-full bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 transition shadow-sm"
           >
             {theme === "light" ? (
               <Sun size={20} className="text-blue-500" />
@@ -79,7 +87,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
           </button>
         </div>
 
-        <nav className="space-y-2">
+        <nav className="space-y-2 flex-1 overflow-y-auto pb-20">
           <NavLink
             to="/dashboard"
             end
@@ -138,14 +146,12 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
           </NavLink>
         </nav>
 
-        <div className="mt-auto pt-8">
-          <button className="flex items-center gap-3 text-red-500 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300">
-            <LogOut size={20} /> Delogare
-          </button>
+        <div className="sticky bottom-0 bg-white dark:bg-gray-800 py-4 border-t border-gray-200 dark:border-gray-700">
+          <UserBadge />
         </div>
       </aside>
 
-      <main className="flex-1 p-8 pt-20 md:pt-8 dark:bg-gray-900 dark:text-gray-100">
+      <main className="flex-1 p-8 pt-24 md:pt-8 dark:bg-gray-900 dark:text-gray-100 overflow-y-auto">
         {children}
       </main>
     </div>
