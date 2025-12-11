@@ -8,6 +8,7 @@ import {
   X,
   Sun,
   Moon,
+  LayoutDashboard,
 } from "lucide-react";
 import { NavLink } from "react-router-dom";
 import { useTheme } from "@/context/ThemeContext";
@@ -89,6 +90,20 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
 
         <nav className="space-y-2 flex-1 overflow-y-auto pb-20">
           <NavLink
+            to="/dashboard/home"
+            className={({ isActive }) =>
+              `${linkClasses} ${
+                isActive
+                  ? "text-blue-600 bg-blue-50 dark:bg-blue-900/40 dark:text-blue-300"
+                  : "text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400"
+              }`
+            }
+            onClick={() => setOpen(false)}
+          >
+            <Home size={20} /> Acasă
+          </NavLink>
+
+          <NavLink
             to="/dashboard"
             end
             className={({ isActive }) =>
@@ -100,7 +115,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
             }
             onClick={() => setOpen(false)}
           >
-            <Home size={20} /> Dashboard
+            <LayoutDashboard size={20} /> Dashboard
           </NavLink>
 
           <NavLink
