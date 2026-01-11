@@ -26,11 +26,7 @@ const HeroSection = () => {
               onClick={() => navigate("/onboarding")}
               className="px-7 py-3 rounded-xl bg-blue-600 text-white font-semibold hover:bg-blue-700 transition shadow-md"
             >
-<<<<<<< HEAD
-              Aplică acum
-=======
               {t("hero.cta")}
->>>>>>> upstream/main
             </button>
           </div>
 
