@@ -43,7 +43,7 @@ export { useScoringCalculator } from "./hooks/useScoringCalculator";
 
 // Components
 export { ScoringCalculator } from "./components/ScoringCalculator/ScoringCalculator";
-export { ScoringHistoryCard } from "./components/ScoringCalculator/ScoringHistoryCard";
+export type { ScoringHistoryCardProps } from "./components/ScoringCalculator/ScoringHistoryCard";
 
 // Pages
 export { ScoringCalculatorPage } from "./pages/ScoringCalculatorPage";

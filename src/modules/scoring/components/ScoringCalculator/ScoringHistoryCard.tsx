@@ -1,8 +1,6 @@
-// src/modules/scoring/components/ScoringHistoryCard.tsx
-
 import React, { useState } from "react";
 import { ChevronDown, ChevronUp, Calendar } from "lucide-react";
-import type { ScoringHistory } from "@modules/scoring/types/scoringCalculator.types";
+import type { ScoringHistory, ScoreRange } from "@modules/scoring/types/scoringCalculator.types";
 import {
   getScoreIcon,
   getEligibilityIcon,
@@ -10,32 +8,18 @@ import {
   formatRON,
   getScoreColorClass,
 } from "@modules/scoring/utils/scoringCalculator.utils";
-import type { ScoreRange } from "@modules/scoring/types/scoringCalculator.types";
 
-export interface ScoringHistoryCardProps {
-  data: ScoringHistory; // Add this property
-  isDarkMode: boolean;
-  onSelect: () => void;
+interface ScoringHistoryCardProps {
+  entry: ScoringHistory;
 }
 
-// Ensure the component uses the updated props
-const ScoringHistoryCard: React.FC<ScoringHistoryCardProps> = ({
-  data,
-  isDarkMode,
-  onSelect,
+export const ScoringHistoryCard: React.FC<ScoringHistoryCardProps> = ({
+  entry,
 }) => {
   const [isExpanded, setIsExpanded] = useState(false);
 
   return (
-    <div
-      className={`p-4 rounded-lg shadow-md ${
-        isDarkMode ? "bg-[#1e293b] text-white" : "bg-gray-50 text-gray-800"
-      }`}
-      onClick={onSelect}
-    >
-      <h3 className="text-lg font-semibold">{data.title}</h3>
-      <p className="text-sm">{data.description}</p>
-
+    <div className="bg-[#172131] border border-[#233248] rounded-xl overflow-hidden hover:shadow-lg hover:shadow-black/20 transition-all">
       {/* Header - Dark Mode */}
       <button
         onClick={() => setIsExpanded(!isExpanded)}
@@ -44,29 +28,28 @@ const ScoringHistoryCard: React.FC<ScoringHistoryCardProps> = ({
         <div className="flex items-center gap-3 sm:gap-4">
           <div
             className={`w-10 h-10 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center ${
-              data.result.eligibil ? "bg-green-500/20" : "bg-red-500/20"
+              entry.result.eligibil ? "bg-green-500/20" : "bg-red-500/20"
             }`}
           >
-            {getScoreIcon(data.result.scoreRange as ScoreRange)}{" "}
-            {/* Type assertion */}
+            {getScoreIcon(entry.result.scoreRange as ScoreRange)}
           </div>
           <div className="text-left">
-            {data.clientName && (
+            {entry.clientName && (
               <p className="font-semibold text-white text-sm sm:text-base">
-                {data.clientName}
+                {entry.clientName}
               </p>
             )}
-            {data.clientId && (
+            {entry.clientId && (
               <p className="text-xs sm:text-sm text-gray-400">
-                {data.clientId}
+                {entry.clientId}
               </p>
             )}
-            {!data.clientName && !data.clientId && (
+            {!entry.clientName && !entry.clientId && (
               <p className="text-xs sm:text-sm text-gray-400">Calcul anonim</p>
             )}
             <div className="flex items-center gap-2 text-[10px] sm:text-xs text-gray-500 mt-1">
               <Calendar className="w-3 h-3" />
-              <span>{data.calculatedAt}</span>
+              <span>{entry.calculatedAt}</span>
             </div>
           </div>
         </div>
@@ -74,10 +57,10 @@ const ScoringHistoryCard: React.FC<ScoringHistoryCardProps> = ({
         <div className="flex items-center gap-3 sm:gap-4">
           <div className="text-right">
             <p className="text-xl sm:text-2xl font-bold text-white">
-              {data.result.score}
+              {entry.result.score}
             </p>
             <p className="text-[10px] sm:text-xs text-gray-400">
-              {getScoreRangeLabel(data.result.scoreRange as ScoreRange)}
+              {getScoreRangeLabel(entry.result.scoreRange as ScoreRange)}
             </p>
           </div>
           {isExpanded ? (
@@ -102,7 +85,7 @@ const ScoringHistoryCard: React.FC<ScoringHistoryCardProps> = ({
                   Salariu
                 </p>
                 <p className="font-semibold text-white text-xs sm:text-sm">
-                  {formatRON(data.input.salariu)}
+                  {formatRON(entry.input.salariu)}
                 </p>
               </div>
               <div>
@@ -110,7 +93,7 @@ const ScoringHistoryCard: React.FC<ScoringHistoryCardProps> = ({
                   Cheltuieli
                 </p>
                 <p className="font-semibold text-white text-xs sm:text-sm">
-                  {formatRON(data.input.cheltuieli)}
+                  {formatRON(entry.input.cheltuieli)}
                 </p>
               </div>
               <div>
@@ -118,7 +101,7 @@ const ScoringHistoryCard: React.FC<ScoringHistoryCardProps> = ({
                   Datorii
                 </p>
                 <p className="font-semibold text-white text-xs sm:text-sm">
-                  {formatRON(data.input.datorii)}
+                  {formatRON(entry.input.datorii)}
                 </p>
               </div>
             </div>
@@ -129,9 +112,9 @@ const ScoringHistoryCard: React.FC<ScoringHistoryCardProps> = ({
             {/* Score Bar - Dark Mode */}
             <div
               className={`p-3 sm:p-4 rounded-xl border ${
-                data.result.scoreColor === "GREEN"
+                entry.result.scoreColor === "GREEN"
                   ? "bg-green-500/10 border-green-500/30"
-                  : data.result.scoreColor === "YELLOW"
+                  : entry.result.scoreColor === "YELLOW"
                   ? "bg-yellow-500/10 border-yellow-500/30"
                   : "bg-red-500/10 border-red-500/30"
               }`}
@@ -141,15 +124,15 @@ const ScoringHistoryCard: React.FC<ScoringHistoryCardProps> = ({
                   Scor Final
                 </span>
                 <span className="text-lg sm:text-xl font-bold text-white">
-                  {data.result.score}
+                  {entry.result.score}
                 </span>
               </div>
               <div className="w-full h-1.5 sm:h-2 bg-[#0f172a] rounded-full overflow-hidden">
                 <div
                   className={`h-full ${getScoreColorClass(
-                    data.result.scoreColor
+                    entry.result.scoreColor
                   )} transition-all rounded-full`}
-                  style={{ width: `${data.result.score}%` }}
+                  style={{ width: `${entry.result.score}%` }}
                 />
               </div>
             </div>
@@ -157,23 +140,23 @@ const ScoringHistoryCard: React.FC<ScoringHistoryCardProps> = ({
             {/* Eligibility - Dark Mode */}
             <div
               className={`p-3 rounded-xl flex items-center gap-2 sm:gap-3 ${
-                data.result.eligibil
+                entry.result.eligibil
                   ? "bg-green-500/10 border border-green-500/30"
                   : "bg-red-500/10 border border-red-500/30"
               }`}
             >
-              {getEligibilityIcon(data.result.eligibil)}
+              {getEligibilityIcon(entry.result.eligibil)}
               <div className="flex-1 min-w-0">
                 <p
                   className={`font-medium text-xs sm:text-sm ${
-                    data.result.eligibil ? "text-green-400" : "text-red-400"
+                    entry.result.eligibil ? "text-green-400" : "text-red-400"
                   }`}
                 >
-                  {data.result.eligibil ? "Eligibil ✓" : "Neeligibil"}
+                  {entry.result.eligibil ? "Eligibil ✓" : "Neeligibil"}
                 </p>
-                {data.result.sumaMaximaCredit && (
+                {entry.result.sumaMaximaCredit && (
                   <p className="text-[10px] sm:text-xs text-green-300 mt-0.5 break-words">
-                    Max: {formatRON(data.result.sumaMaximaCredit)}
+                    Max: {formatRON(entry.result.sumaMaximaCredit)}
                   </p>
                 )}
               </div>
@@ -181,7 +164,7 @@ const ScoringHistoryCard: React.FC<ScoringHistoryCardProps> = ({
 
             {/* Explanation - Dark Mode */}
             <div className="text-xs sm:text-sm text-gray-400 bg-[#0f172a] border border-[#233248] p-3 rounded-lg leading-relaxed break-words">
-              {data.result.explicatie}
+              {entry.result.explicatie}
             </div>
 
             {/* Additional Info - Dark Mode */}
@@ -190,13 +173,13 @@ const ScoringHistoryCard: React.FC<ScoringHistoryCardProps> = ({
                 <span>
                   Rată îndatorare:{" "}
                   <span className="text-gray-300 font-medium">
-                    {(data.result.rataIndatorare * 100).toFixed(1)}%
+                    {(entry.result.rataIndatorare * 100).toFixed(1)}%
                   </span>
                 </span>
                 <span>
                   Calculat de:{" "}
                   <span className="text-gray-300 font-medium">
-                    {data.calculatedBy}
+                    {entry.calculatedBy}
                   </span>
                 </span>
               </div>
@@ -207,5 +190,3 @@ const ScoringHistoryCard: React.FC<ScoringHistoryCardProps> = ({
     </div>
   );
 };
-
-export default ScoringHistoryCard;

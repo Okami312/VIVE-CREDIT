@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import {
   Calculator,
   DollarSign,
@@ -6,11 +6,11 @@ import {
   TrendingDown,
   Loader2,
   AlertCircle,
-} from 'lucide-react';
+} from "lucide-react";
 import type {
   ScoringInput,
   ScoringResult,
-} from '@modules/scoring/types/scoringCalculator.types';
+} from "@modules/scoring/types/scoringCalculator.types";
 import {
   getScoreColorClass,
   getScoreBgClass,
@@ -18,7 +18,7 @@ import {
   getEligibilityIcon,
   getScoreRangeLabel,
   formatRON,
-} from '@modules/scoring/utils/scoringCalculator.utils';
+} from "@modules/scoring/utils/scoringCalculator.utils";
 
 interface ScoringCalculatorProps {
   onCalculate: (input: ScoringInput) => Promise<ScoringResult | null>;
@@ -76,17 +76,16 @@ export const ScoringCalculator: React.FC<ScoringCalculatorProps> = ({
   };
 
   return (
-    <div className="bg-white rounded-2xl border border-gray-200 p-6">
+    <div className="bg-[#172131] border border-[#233248] rounded-xl p-4 sm:p-6">
       {/* Header */}
       <div className="flex items-center gap-3 mb-6">
         <div className="w-12 h-12 bg-[#2e57e1] rounded-xl flex items-center justify-center">
           <Calculator className="w-6 h-6 text-white" />
         </div>
         <div>
-          <h2 className="text-xl font-bold text-gray-800">
-            Calculator Scoring
-          </h2>
-          <p className="text-sm text-gray-500">
+          <h2 className="text-xl font-bold text-white">Calculator Scoring</h2>
+          <p className="text-sm text-gray-400">
+            {" "}
             Calculează scorul în timp real
           </p>
         </div>
@@ -94,12 +93,13 @@ export const ScoringCalculator: React.FC<ScoringCalculatorProps> = ({
 
       {/* Error Alert */}
       {error && (
-        <div className="mb-6 bg-red-50 border border-red-200 rounded-xl p-4">
+        <div className="mb-6 bg-red-500/10 border border-red-500/30 rounded-xl p-4">
+          {" "}
           <div className="flex items-start gap-3">
             <AlertCircle className="w-5 h-5 text-red-500 mt-0.5" />
             <div>
-              <p className="font-medium text-red-800">Eroare</p>
-              <p className="text-sm text-red-600">{error}</p>
+              <p className="font-medium text-red-300">Eroare</p>
+              <p className="text-sm text-red-400">{error}</p>
             </div>
           </div>
         </div>
@@ -110,7 +110,7 @@ export const ScoringCalculator: React.FC<ScoringCalculatorProps> = ({
         <form onSubmit={handleSubmit} className="space-y-5">
           {/* Salariu */}
           <div>
-            <label className="flex items-center gap-2 text-sm font-medium text-gray-700 mb-2">
+            <label className="flex items-center gap-2 text-sm font-medium text-gray-300 mb-2">
               <DollarSign className="w-4 h-4" />
               Salariu net lunar (RON) *
             </label>
@@ -123,14 +123,14 @@ export const ScoringCalculator: React.FC<ScoringCalculatorProps> = ({
               onChange={(e) =>
                 setInput({ ...input, salariu: Number(e.target.value) })
               }
-              className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#2e57e1] focus:border-transparent text-lg"
+              className="w-full px-4 py-3 bg-[#0f172a] border border-[#233248] rounded-xl text-white placeholder-gray-500 focus:ring-2 focus:ring-[#2e57e1] focus:border-transparent text-lg"
               placeholder="5000"
             />
           </div>
 
           {/* Cheltuieli */}
           <div>
-            <label className="flex items-center gap-2 text-sm font-medium text-gray-700 mb-2">
+            <label className="flex items-center gap-2 text-sm font-medium text-gray-300 mb-2">
               <CreditCard className="w-4 h-4" />
               Cheltuieli lunare (RON) *
             </label>
@@ -143,14 +143,14 @@ export const ScoringCalculator: React.FC<ScoringCalculatorProps> = ({
               onChange={(e) =>
                 setInput({ ...input, cheltuieli: Number(e.target.value) })
               }
-              className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#2e57e1] focus:border-transparent text-lg"
+              className="w-full px-4 py-3 bg-[#0f172a] border border-[#233248] rounded-xl text-white placeholder-gray-500 focus:ring-2 focus:ring-[#2e57e1] focus:border-transparent text-lg"
               placeholder="1500"
             />
           </div>
 
           {/* Datorii */}
           <div>
-            <label className="flex items-center gap-2 text-sm font-medium text-gray-700 mb-2">
+            <label className="flex items-center gap-2 text-sm font-medium text-gray-300 mb-2">
               <TrendingDown className="w-4 h-4" />
               Datorii existente (RON) *
             </label>
@@ -163,7 +163,7 @@ export const ScoringCalculator: React.FC<ScoringCalculatorProps> = ({
               onChange={(e) =>
                 setInput({ ...input, datorii: Number(e.target.value) })
               }
-              className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#2e57e1] focus:border-transparent text-lg"
+              className="w-full px-4 py-3 bg-[#0f172a] border border-[#233248] rounded-xl text-white placeholder-gray-500 focus:ring-2 focus:ring-[#2e57e1] focus:border-transparent text-lg"
               placeholder="800"
             />
           </div>
@@ -202,15 +202,15 @@ export const ScoringCalculator: React.FC<ScoringCalculatorProps> = ({
               <div className="flex items-center gap-3">
                 {getScoreIcon(result.scoreRange)}
                 <div>
-                  <p className="text-sm text-gray-600">Scor Final</p>
-                  <p className="text-4xl font-bold text-gray-800">
+                  <p className="text-sm text-gray-400">Scor Final</p>
+                  <p className="text-4xl font-bold text-white">
                     {result.score}
                   </p>
                 </div>
               </div>
               <div className="text-right">
-                <p className="text-sm text-gray-600">Categorie</p>
-                <p className="text-lg font-semibold text-gray-800">
+                <p className="text-sm text-gray-400">Categorie</p>
+                <p className="text-lg font-semibold text-white">
                   {getScoreRangeLabel(result.scoreRange)}
                 </p>
               </div>
@@ -218,7 +218,7 @@ export const ScoringCalculator: React.FC<ScoringCalculatorProps> = ({
 
             {/* Score Bar */}
             <div className="relative">
-              <div className="w-full h-4 bg-gray-200 rounded-full overflow-hidden">
+              <div className="w-full h-4 bg-[#0f172a] rounded-full overflow-hidden">
                 <div
                   className={`h-full ${getScoreColorClass(
                     result.scoreColor
@@ -240,8 +240,8 @@ export const ScoringCalculator: React.FC<ScoringCalculatorProps> = ({
             {/* Rata Indatorare */}
             <div className="bg-gray-50 rounded-xl p-4">
               <div className="flex items-center justify-between">
-                <span className="text-sm text-gray-600">Rată îndatorare</span>
-                <span className="font-semibold text-gray-800">
+                <span className="text-sm text-gray-400">Rată îndatorare</span>
+                <span className="font-semibold text-white">
                   {(result.rataIndatorare * 100).toFixed(1)}%
                 </span>
               </div>
@@ -251,8 +251,8 @@ export const ScoringCalculator: React.FC<ScoringCalculatorProps> = ({
             <div
               className={`rounded-xl p-4 border ${
                 result.eligibil
-                  ? 'bg-green-50 border-green-200'
-                  : 'bg-red-50 border-red-200'
+                  ? "bg-green-50 border-green-200"
+                  : "bg-red-50 border-red-200"
               }`}
             >
               <div className="flex items-center gap-3">
@@ -260,10 +260,10 @@ export const ScoringCalculator: React.FC<ScoringCalculatorProps> = ({
                 <div>
                   <p
                     className={`font-semibold ${
-                      result.eligibil ? 'text-green-800' : 'text-red-800'
+                      result.eligibil ? "text-green-800" : "text-red-800"
                     }`}
                   >
-                    {result.eligibil ? 'Client Eligibil' : 'Client Neeligibil'}
+                    {result.eligibil ? "Client Eligibil" : "Client Neeligibil"}
                   </p>
                   {result.sumaMaximaCredit && (
                     <p className="text-sm text-green-700">
@@ -294,7 +294,7 @@ export const ScoringCalculator: React.FC<ScoringCalculatorProps> = ({
           {/* Actions */}
           <button
             onClick={handleReset}
-            className="w-full px-6 py-3 border border-gray-200 rounded-xl text-gray-600 font-medium hover:bg-gray-50 transition-colors"
+            className="w-full px-6 py-3 border border-gray-200 rounded-xl text-gray-400 font-medium hover:bg-gray-50 transition-colors"
           >
             Calcul Nou
           </button>

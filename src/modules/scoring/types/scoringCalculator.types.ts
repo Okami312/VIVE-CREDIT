@@ -34,6 +34,7 @@ export interface ScoringResult {
 }
 
 export interface ScoringHistory {
+  id: string;
   title: string;
   description: string;
   clientName?: string;
