@@ -100,8 +100,16 @@ export default function FormScorecardClient() {
         )}
         {step === 2 && (
           <HousingStep
-            data={formData}
-            updateData={updateData}
+            data={formData as { expenses: { rent: string; utilities: string; existingRates: string } }}
+            updateData={(newData: { expenses: { rent: string | number; utilities: string | number; existingRates: string | number } }) =>
+              updateData({
+          expenses: {
+            rent: Number(newData.expenses.rent) || "",
+            utilities: Number(newData.expenses.utilities) || "",
+            existingRates: Number(newData.expenses.existingRates) || "",
+          },
+              })
+            }
             onNext={() => setStep(3)}
             onBack={() => setStep(1)}
           />
@@ -109,7 +117,15 @@ export default function FormScorecardClient() {
         {step === 3 && (
           <ExpensesStep
             data={formData}
-            updateData={updateData}
+            updateData={(newData) =>
+              updateData({
+                expenses: {
+                  rent: Number(newData.expenses.rent) || 0,
+                  utilities: Number(newData.expenses.utilities) || 0,
+                  existingRates: Number(newData.expenses.existingRates) || 0,
+                },
+              })
+            }
             onNext={() => setStep(4)}
             onBack={() => setStep(2)}
           />
