@@ -64,7 +64,7 @@ const ClientLoginPage = () => {
     if (isMockAccount || onboardingCompleted) {
       navigate("/dashboard/home");
     } else {
-      navigate("/onboarding/profile");
+      navigate("/onboarding");
     }
   };
 
@@ -156,6 +156,16 @@ const ClientLoginPage = () => {
             {passwordError && (
               <p className="text-sm text-red-500 mt-1">{passwordError}</p>
             )}
+          </div>
+
+          <div className="text-right">
+            <button
+              type="button"
+              onClick={() => navigate("/forgot-password")}
+              className="text-sm text-blue-600 hover:underline"
+            >
+              Ai uitat parola?
+            </button>
           </div>
 
           <button

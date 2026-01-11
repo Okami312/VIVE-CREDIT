@@ -11,20 +11,24 @@ import {
 } from "../mock/dashboardMock";
 
 export default function ClientHomePage() {
-  const onboardingCompleted =
-    localStorage.getItem("onboardingCompleted") === "true";
-
-  const [showSuccess, setShowSuccess] = useState(onboardingCompleted);
+  const [showSuccess, setShowSuccess] = useState(false);
 
   useEffect(() => {
-    if (!onboardingCompleted) return;
+    const shouldShow =
+      localStorage.getItem("showRegistrationSuccess") === "true";
+
+    if (!shouldShow) return;
+
+    setShowSuccess(true);
+
+    localStorage.removeItem("showRegistrationSuccess");
 
     const timer = setTimeout(() => {
       setShowSuccess(false);
     }, 5000);
 
     return () => clearTimeout(timer);
-  }, [onboardingCompleted]);
+  }, []);
 
   return (
     <DashboardLayout>

@@ -94,7 +94,7 @@ const ClientRegisterPage = () => {
     localStorage.setItem("clientAccount", JSON.stringify({ email, password }));
 
     dispatch(login("client"));
-    navigate("/onboarding/profile");
+    navigate("/onboarding");
   };
 
   return (

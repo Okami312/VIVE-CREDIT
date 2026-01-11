@@ -1,11 +1,13 @@
 import { useState, type ReactNode } from "react";
 
 export interface Column<T> {
-  key: keyof T;
+  key: keyof T | "actions";
   label: string;
+  width?: string;
   render?: (item: T) => ReactNode;
   className?: string;
   headerClassName?: string;
+  align?: "left" | "center" | "right";
 }
 
 interface Props<T> {
@@ -14,6 +16,8 @@ interface Props<T> {
   pageSize?: number;
   onRowClick?: (item: T) => void;
   noResultsText?: string;
+  selectedRow?: T | null;
+  getRowId?: (item: T) => string;
 }
 
 export default function ApplicationTable<T>({
@@ -22,37 +26,36 @@ export default function ApplicationTable<T>({
   pageSize = 10,
   onRowClick,
   noResultsText = "No data found",
+  selectedRow,
+  getRowId,
 }: Props<T>) {
   const [page, setPage] = useState(1);
 
   const totalPages = Math.ceil(data.length / pageSize);
   const paginated = data.slice((page - 1) * pageSize, page * pageSize);
 
+  const alignClass = (align?: "left" | "center" | "right") =>
+    align === "right"
+      ? "text-right"
+      : align === "center"
+      ? "text-center"
+      : "text-left";
+
+  const gridTemplate = columns.map((c) => c.width ?? "1fr").join(" ");
+
   return (
-    <div className="mt-4 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow-sm overflow-hidden">
-      {/* SCROLL WRAPPER */}
-      <div className="overflow-x-auto w-full">
+    <div className="overflow-x-auto">
+      <div className="inline-block min-w-full bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm">
         {/* HEADER */}
         <div
-          className="
-          grid px-4 py-3 gap-x-2 min-w-max
-          bg-gray-100 dark:bg-gray-700 
-          font-semibold text-gray-700 dark:text-gray-100 
-          text-sm
-        "
-          style={{
-            gridTemplateColumns: columns
-              .map((_, i) =>
-                i === columns.length - 1 ? "max-content" : "minmax(120px,1fr)"
-              )
-              .join(" "),
-          }}
+          className="grid px-4 py-3 bg-gray-100 dark:bg-gray-700 font-semibold text-gray-700 dark:text-gray-100 text-sm"
+          style={{ gridTemplateColumns: gridTemplate }}
         >
           {columns.map((col) => (
             <div
               key={String(col.key)}
-              className={`truncate ${
-                col.headerClassName ?? col.className ?? ""
+              className={`${alignClass(col.align)} ${
+                col.headerClassName ?? ""
               }`}
             >
               {col.label}
@@ -60,84 +63,80 @@ export default function ApplicationTable<T>({
           ))}
         </div>
 
-        {/* EMPTY STATE*/}
+        {/* ROWS */}
+        {paginated.map((item) => {
+          const isSelected =
+            selectedRow && getRowId && getRowId(item) === getRowId(selectedRow);
+          return (
+            <div
+              key={getRowId ? getRowId(item) : (item as any).id}
+              onClick={() => onRowClick?.(item)}
+              className={`grid px-4 py-3 border-b text-sm transition
+                ${
+                  onRowClick
+                    ? "cursor-pointer hover:bg-blue-50 dark:hover:bg-gray-700"
+                    : ""
+                }
+                ${isSelected ? "bg-blue-100 dark:bg-blue-900/40" : ""}`}
+              style={{ gridTemplateColumns: gridTemplate }}
+            >
+              {columns.map((col) => {
+                if (col.key === "actions") {
+                  return (
+                    <div
+                      key={String(col.key)}
+                      className={`flex items-center px-2 ${alignClass(
+                        col.align
+                      )} ${col.className ?? ""}`}
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      {col.render ? col.render(item) : null}
+                    </div>
+                  );
+                }
+
+                const value = item[col.key as keyof T];
+
+                return (
+                  <div
+                    key={String(col.key)}
+                    className={`${alignClass(col.align)} ${
+                      col.className ?? ""
+                    } break-words`}
+                  >
+                    {col.render ? col.render(item) : value ?? "N/A"}
+                  </div>
+                );
+              })}
+            </div>
+          );
+        })}
+
+        {/* EMPTY STATE */}
         {data.length === 0 && (
           <div className="text-center py-6 text-gray-500">{noResultsText}</div>
         )}
 
-        {/* ROWS */}
-        {paginated.map((item, idx) => (
-          <div
-            key={idx}
-            onClick={() => onRowClick?.(item)}
-            className="
-            grid  px-4 py-3 gap-x-2 min-w-max
-            border-b border-gray-100 dark:border-gray-700
-            text-sm text-gray-800 dark:text-gray-100
-            hover:bg-blue-50 dark:hover:bg-gray-700
-            transition cursor-pointer
-          "
-            style={{
-              gridTemplateColumns: columns
-                .map((_, i) =>
-                  i === columns.length - 1 ? "max-content" : "minmax(120px,1fr)"
-                )
-                .join(" "),
-            }}
-          >
-            {columns.map((col) => {
-              const value = item[col.key];
-
-              return (
-                <div
-                  key={String(col.key)}
-                  className={`${
-                    col.className ?? ""
-                  } flex items-center break-words whitespace-normal min-w-0`}
-                >
-                  {col.render
-                    ? col.render(item)
-                    : value !== undefined &&
-                      (typeof value === "string" ||
-                        typeof value === "number" ||
-                        typeof value === "boolean")
-                    ? String(value)
-                    : null}
-                </div>
-              );
-            })}
+        {/* PAGINATION */}
+        {totalPages > 1 && (
+          <div className="flex justify-center gap-3 p-4">
+            <button
+              disabled={page === 1}
+              onClick={() => setPage(page - 1)}
+              className="px-3 py-1 text-sm bg-blue-500 text-white rounded-lg disabled:opacity-40"
+            >
+              Prev
+            </button>
+            <button
+              disabled={page === totalPages}
+              onClick={() => setPage(page + 1)}
+              className="px-3 py-1 text-sm bg-blue-500 text-white rounded-lg disabled:opacity-40"
+            >
+              Next
+            </button>
           </div>
-        ))}
+        )}
       </div>
-
-      {/* PAGINATION */}
-      {totalPages > 1 && (
-        <div className="flex justify-center gap-3 p-4">
-          <button
-            disabled={page === 1}
-            onClick={() => setPage(page - 1)}
-            className="
-              px-3 py-1 text-sm
-              bg-blue-500 text-white rounded-lg 
-              disabled:opacity-40
-            "
-          >
-            Prev
-          </button>
-
-          <button
-            disabled={page === totalPages}
-            onClick={() => setPage(page + 1)}
-            className="
-              px-3 py-1 text-sm
-              bg-blue-500 text-white rounded-lg 
-              disabled:opacity-40
-            "
-          >
-            Next
-          </button>
-        </div>
-      )}
     </div>
   );
 }
