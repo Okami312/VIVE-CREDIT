@@ -1,14 +1,31 @@
-import { Button } from '@/components/ui/button';
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
+import { Button } from "@/components/ui/button";
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
 export default function ExpensesStep({
   data,
   updateData,
   onNext,
   onBack,
-}: any) {
+}: {
+  data: {
+    expenses: {
+      rent: number | string;
+      utilities: number | string;
+      existingRates: number | string;
+    };
+  };
+  updateData: (newData: {
+    expenses: {
+      rent: number | string;
+      utilities: number | string;
+      existingRates: number | string;
+    };
+  }) => void;
+  onNext: () => void;
+  onBack: () => void;
+}) {
   return (
     <Card
       className="w-full max-w-md mx-auto
@@ -25,7 +42,7 @@ export default function ExpensesStep({
       <CardContent>
         <div className="mb-6 space-y-2">
           <Label className="dark:text-slate-300">
-            Chirie{' '}
+            Chirie{" "}
             <span className="text-slate-600 text-[10px] ">(Opțional)</span>
           </Label>
           <Input
@@ -33,15 +50,15 @@ export default function ExpensesStep({
             placeholder="Ex: 1000 Ron"
             value={data.expenses.rent}
             onChange={(e) => {
-              if (e.target.value === '') {
+              if (e.target.value === "") {
                 updateData({
-                  expenses: { ...data.expenses, rent: '' },
+                  expenses: { ...data.expenses, rent: "" },
                 });
                 return;
               }
               if (
-                e.target.value.startsWith('0') ||
-                e.target.value.startsWith('-')
+                e.target.value.startsWith("0") ||
+                e.target.value.startsWith("-")
               ) {
                 return;
               }
@@ -62,15 +79,15 @@ export default function ExpensesStep({
             placeholder="Ex: 500 Ron"
             value={data.expenses.utilities}
             onChange={(e) => {
-              if (e.target.value === '') {
+              if (e.target.value === "") {
                 updateData({
-                  expenses: { ...data.expenses, utilities: '' },
+                  expenses: { ...data.expenses, utilities: "" },
                 });
                 return;
               }
               if (
-                e.target.value.startsWith('0') ||
-                e.target.value.startsWith('-')
+                e.target.value.startsWith("0") ||
+                e.target.value.startsWith("-")
               ) {
                 return;
               }
@@ -86,7 +103,7 @@ export default function ExpensesStep({
         </div>
         <div className="mb-6 space-y-2">
           <Label className="dark:text-slate-300">
-            Rate Existente{' '}
+            Rate Existente{" "}
             <span className="text-slate-600 text-[10px] ">(Opțional)</span>
           </Label>
           <Input
@@ -94,15 +111,15 @@ export default function ExpensesStep({
             placeholder="Ex: 1100 Ron"
             value={data.expenses.existingRates}
             onChange={(e) => {
-              if (e.target.value === '') {
+              if (e.target.value === "") {
                 updateData({
-                  expenses: { ...data.expenses, existingRates: '' },
+                  expenses: { ...data.expenses, existingRates: "" },
                 });
                 return;
               }
               if (
-                e.target.value.startsWith('0') ||
-                e.target.value.startsWith('-')
+                e.target.value.startsWith("0") ||
+                e.target.value.startsWith("-")
               ) {
                 return;
               }

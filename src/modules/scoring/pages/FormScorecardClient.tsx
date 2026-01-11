@@ -1,12 +1,12 @@
-import { useEffect, useState } from 'react';
-import type { ScoringFormData } from '../types/FormScorecard.types';
-import { useNavigate } from 'react-router-dom';
-import ThemeToggle from '@/components/ThemeToggle';
-import { Check } from 'lucide-react';
-import IncomeStep from '../components/scorecard-components/form-scorecard-client/IncomeStep';
-import ExpensesStep from '../components/scorecard-components/form-scorecard-client/ExpensesStep';
-import HousingStep from '../components/scorecard-components/form-scorecard-client/HousingStep';
-import SummaryStep from '../components/scorecard-components/form-scorecard-client/SummaryStep';
+import { useEffect, useState } from "react";
+import type { ScoringFormData } from "../types/FormScorecard.types";
+import { useNavigate } from "react-router-dom";
+import ThemeToggle from "@/components/ThemeToggle";
+import { Check } from "lucide-react";
+import IncomeStep from "../components/scorecard-components/form-scorecard-client/IncomeStep";
+import ExpensesStep from "../components/scorecard-components/form-scorecard-client/ExpensesStep";
+import HousingStep from "../components/scorecard-components/form-scorecard-client/HousingStep";
+import SummaryStep from "../components/scorecard-components/form-scorecard-client/SummaryStep";
 
 export default function FormScorecardClient() {
   const navigate = useNavigate();
@@ -14,9 +14,9 @@ export default function FormScorecardClient() {
   const totalSteps = 4;
 
   const [formData, setFormData] = useState<ScoringFormData>({
-    income: { salaryNet: '', otherIncome: '' },
-    expenses: { rent: '', utilities: '', existingRates: '' },
-    housingStatus: '',
+    income: { salaryNet: "", otherIncome: "" },
+    expenses: { rent: "", utilities: "", existingRates: "" },
+    housingStatus: "",
   });
 
   const updateData = (data: Partial<ScoringFormData>) =>
@@ -24,22 +24,22 @@ export default function FormScorecardClient() {
 
   // Încarcă datele salvate DOAR la mount (o singură dată)
   useEffect(() => {
-    const saved = localStorage.getItem('scoring-draft');
+    const saved = localStorage.getItem("scoring-draft");
     if (saved) {
       try {
         setFormData(JSON.parse(saved));
       } catch (error) {
-        console.error('Eroare la încărcarea datelor salvate:', error);
+        console.error("Eroare la încărcarea datelor salvate:", error);
       }
     }
   }, []); // Array gol = rulează DOAR o dată la mount
 
   // Salvează automat la fiecare modificare a formData
   useEffect(() => {
-    localStorage.setItem('scoring-draft', JSON.stringify(formData));
+    localStorage.setItem("scoring-draft", JSON.stringify(formData));
   }, [formData]);
 
-  const steps = ['Venituri', 'Cheltuieli', 'Locuință', 'Rezumat'];
+  const steps = ["Venituri", "Cheltuieli", "Locuință", "Rezumat"];
 
   return (
     <div className="min-h-screen flex flex-col items-center px-4 pt-16 pb-10 bg-gradient-to-b from-blue-50 to-white dark:from-[#0b162f] dark:to-[#0a1124]">
@@ -65,10 +65,10 @@ export default function FormScorecardClient() {
                 <div
                   className={`w-9 h-9 flex items-center justify-center rounded-full border ${
                     completed
-                      ? 'bg-blue-600 text-white'
+                      ? "bg-blue-600 text-white"
                       : isActive
-                      ? 'bg-blue-300 dark:bg-blue-900 text-blue-900 dark:text-blue-100 border-blue-400'
-                      : 'bg-blue-100 dark:bg-slate-800 text-gray-600 dark:text-gray-400'
+                      ? "bg-blue-300 dark:bg-blue-900 text-blue-900 dark:text-blue-100 border-blue-400"
+                      : "bg-blue-100 dark:bg-slate-800 text-gray-600 dark:text-gray-400"
                   }`}
                 >
                   {completed ? <Check size={16} /> : current}
@@ -91,8 +91,10 @@ export default function FormScorecardClient() {
       <div className="w-full max-w-md">
         {step === 1 && (
           <IncomeStep
-            data={formData}
-            updateData={updateData}
+            data={{ income: formData.income }}
+            updateData={(newData) =>
+              updateData({ income: { ...formData.income, ...newData } })
+            }
             onNext={() => setStep(2)}
           />
         )}
@@ -113,7 +115,21 @@ export default function FormScorecardClient() {
           />
         )}
         {step === 4 && (
-          <SummaryStep data={formData} onBack={() => setStep(3)} />
+          <SummaryStep
+            data={{
+              income: {
+                salaryNet: Number(formData.income.salaryNet) || 0,
+                otherIncome: Number(formData.income.otherIncome) || 0,
+              },
+              expenses: {
+                rent: Number(formData.expenses.rent) || 0,
+                utilities: Number(formData.expenses.utilities) || 0,
+                existingRates: Number(formData.expenses.existingRates) || 0,
+              },
+              housingStatus: formData.housingStatus,
+            }}
+            onBack={() => setStep(3)}
+          />
         )}
       </div>
     </div>
