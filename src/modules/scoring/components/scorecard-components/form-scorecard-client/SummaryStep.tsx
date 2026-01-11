@@ -1,16 +1,27 @@
-import { Button } from '@/components/ui/button';
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
-import { useState } from 'react';
-<<<<<<< HEAD
+import { Button } from "@/components/ui/button";
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-export default function SummaryStep({ data, onBack }: any) {
-=======
-import { useNavigate } from 'react-router-dom';
+interface SummaryStepProps {
+  data: {
+    income: {
+      salaryNet: number;
+      otherIncome: number;
+    };
+    expenses: {
+      rent: number;
+      utilities: number;
+      existingRates: number;
+    };
+    housingStatus: string;
+  };
+  onBack: () => void;
+}
 
-export default function SummaryStep({ data, onBack }: any) {
+export default function SummaryStep({ data, onBack }: SummaryStepProps) {
   const navigate = useNavigate();
->>>>>>> upstream/main
-  const [saveStatus, setSaveStatus] = useState<'saving' | 'saved' | ''>('');
+  const [saveStatus, setSaveStatus] = useState<"saving" | "saved" | "">("");
 
   const totalIncome =
     (+data.income.salaryNet || 0) + (+data.income.otherIncome || 0);
@@ -20,26 +31,20 @@ export default function SummaryStep({ data, onBack }: any) {
     (+data.expenses.existingRates || 0);
 
   const handleSave = () => {
-    setSaveStatus('saving');
+    setSaveStatus("saving");
 
     setTimeout(() => {
       // Salvare finală - RĂMÂNE în localStorage
-      localStorage.setItem('scoring-final', JSON.stringify(data));
+      localStorage.setItem("scoring-final", JSON.stringify(data));
 
       // Șterge doar draft-ul
-      localStorage.removeItem('scoring-draft');
+      localStorage.removeItem("scoring-draft");
 
-      setSaveStatus('saved');
+      setSaveStatus("saved");
 
-<<<<<<< HEAD
-      // Reîncarcă pagina după 2 secunde
-      setTimeout(() => {
-        window.location.reload();
-      }, 2000);
-=======
       // Navighează către calculator cu datele
       setTimeout(() => {
-        navigate('/calculator', {
+        navigate("/calculator", {
           state: {
             formData: {
               salariu: totalIncome,
@@ -49,16 +54,11 @@ export default function SummaryStep({ data, onBack }: any) {
           },
         });
       }, 1000);
->>>>>>> upstream/main
     }, 500);
   };
 
   return (
-<<<<<<< HEAD
-    <Card className="bg-slate-800">
-=======
     <Card className="dark:bg-slate-800">
->>>>>>> upstream/main
       <CardHeader>
         <CardTitle className="text-2xl text-center font-semibold text-blue-700 dark:text-blue-400">
           Rezumat
@@ -77,18 +77,14 @@ export default function SummaryStep({ data, onBack }: any) {
 
         {/* Indicator de salvare automată */}
         <div className="flex items-center justify-center min-h-[24px]">
-          {saveStatus === 'saving' && (
+          {saveStatus === "saving" && (
             <p className="text-sm text-slate-400 animate-pulse">
               💾 Se salvează...
             </p>
           )}
-          {saveStatus === 'saved' && (
+          {saveStatus === "saved" && (
             <p className="text-sm text-green-500 animate-in fade-in duration-300">
-<<<<<<< HEAD
-              ✓ Datele au fost salvate cu succes!
-=======
               ✓ Datele au fost salvate! Redirecționare...
->>>>>>> upstream/main
             </p>
           )}
         </div>
@@ -98,20 +94,16 @@ export default function SummaryStep({ data, onBack }: any) {
             variant="outline"
             onClick={onBack}
             className="px-6 dark:border-[#243247] dark:bg-slate-900 dark:hover:bg-slate-900/80 dark:text-slate-300"
-            disabled={saveStatus === 'saving'}
+            disabled={saveStatus === "saving"}
           >
             ⬅ Înapoi
           </Button>
           <Button
             onClick={handleSave}
             className="px-6 text-white bg-blue-600 hover:bg-blue-700"
-            disabled={saveStatus === 'saving'}
+            disabled={saveStatus === "saving"}
           >
-<<<<<<< HEAD
-            Salvează
-=======
             Salvează și Calculează
->>>>>>> upstream/main
           </Button>
         </div>
       </CardContent>

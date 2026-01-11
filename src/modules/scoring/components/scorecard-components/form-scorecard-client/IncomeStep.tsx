@@ -1,9 +1,26 @@
-import { Button } from '@/components/ui/button';
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
+import { Button } from "@/components/ui/button";
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
-export default function IncomeStep({ data, updateData, onNext }: any) {
+interface IncomeData {
+  income: {
+    salaryNet: number | string;
+    otherIncome: number | string;
+  };
+}
+
+interface IncomeStepProps {
+  data: IncomeData;
+  updateData: (newData: IncomeData) => void;
+  onNext: () => void;
+}
+
+export default function IncomeStep({
+  data,
+  updateData,
+  onNext,
+}: IncomeStepProps) {
   return (
     <Card className="dark:bg-slate-800">
       <CardHeader>
@@ -19,15 +36,15 @@ export default function IncomeStep({ data, updateData, onNext }: any) {
             placeholder="Ex: 5500"
             value={data.income.salaryNet}
             onChange={(e) => {
-              if (e.target.value === '') {
+              if (e.target.value === "") {
                 updateData({
-                  income: { ...data.income, salaryNet: '' },
+                  income: { ...data.income, salaryNet: "" },
                 });
                 return;
               }
               if (
-                e.target.value.startsWith('0') ||
-                e.target.value.startsWith('-')
+                e.target.value.startsWith("0") ||
+                e.target.value.startsWith("-")
               ) {
                 return;
               }
@@ -42,28 +59,24 @@ export default function IncomeStep({ data, updateData, onNext }: any) {
           />
         </div>
         <div className="mb-6 space-y-2">
-<<<<<<< HEAD
-          <Label className="dark:text-slate-300">Alte venituri (Ron)</Label>
-=======
           <Label className="dark:text-slate-300">
-            Alte venituri (Ron){' '}
+            Alte venituri (Ron){" "}
             <span className="text-slate-600 text-[10px] ">(Opțional)</span>
           </Label>
->>>>>>> upstream/main
           <Input
             type="number"
             placeholder="Ex: 2000"
             value={data.income.otherIncome}
             onChange={(e) => {
-              if (e.target.value === '') {
+              if (e.target.value === "") {
                 updateData({
-                  income: { ...data.income, otherIncome: '' },
+                  income: { ...data.income, otherIncome: "" },
                 });
                 return;
               }
               if (
-                e.target.value.startsWith('0') ||
-                e.target.value.startsWith('-')
+                e.target.value.startsWith("0") ||
+                e.target.value.startsWith("-")
               ) {
                 return;
               }

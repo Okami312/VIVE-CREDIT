@@ -166,11 +166,7 @@ const ClientLoginPage = () => {
               onClick={() => navigate("/forgot-password")}
               className="text-sm text-blue-600 hover:underline"
             >
-<<<<<<< HEAD
-              Ai uitat parola?
-=======
               {t("clientLogin.form.forgotPassword")}
->>>>>>> upstream/main
             </button>
           </div>
 

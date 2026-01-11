@@ -97,11 +97,7 @@ export default function FormScorecardClient() {
           />
         )}
         {step === 2 && (
-<<<<<<< HEAD
-          <ExpensesStep
-=======
           <HousingStep
->>>>>>> upstream/main
             data={formData}
             updateData={updateData}
             onNext={() => setStep(3)}
@@ -109,21 +105,13 @@ export default function FormScorecardClient() {
           />
         )}
         {step === 3 && (
-<<<<<<< HEAD
-          <HousingStep
-=======
           <ExpensesStep
->>>>>>> upstream/main
             data={formData}
             updateData={updateData}
             onNext={() => setStep(4)}
             onBack={() => setStep(2)}
           />
         )}
-<<<<<<< HEAD
-=======
-
->>>>>>> upstream/main
         {step === 4 && (
           <SummaryStep data={formData} onBack={() => setStep(3)} />
         )}
