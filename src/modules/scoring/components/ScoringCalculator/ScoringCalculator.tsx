@@ -59,7 +59,7 @@ export const ScoringCalculator: React.FC<ScoringCalculatorProps> = ({
       // Calculează automat
       onCalculate(data);
     }
-  }, [initialData]);
+  }, [initialData, onCalculate]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
