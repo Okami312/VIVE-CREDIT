@@ -1,11 +1,19 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { ArrowLeft, Mail } from "lucide-react";
+<<<<<<< HEAD
+=======
+import { useTranslation } from "react-i18next";
+>>>>>>> upstream/main
 
 const isValidEmail = (email: string): boolean =>
   /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
 const ForgotPasswordPage = () => {
+<<<<<<< HEAD
+=======
+  const { t } = useTranslation("auth");
+>>>>>>> upstream/main
   const navigate = useNavigate();
 
   const [email, setEmail] = useState("");
@@ -17,11 +25,18 @@ const ForgotPasswordPage = () => {
     setError("");
 
     if (!isValidEmail(email)) {
+<<<<<<< HEAD
       setError("Introdu un email valid.");
       return;
     }
 
     // simulăm trimiterea linkului
+=======
+      setError(t("forgotPassword.errors.invalidEmail"));
+      return;
+    }
+
+>>>>>>> upstream/main
     setSubmitted(true);
   };
 
@@ -32,18 +47,30 @@ const ForgotPasswordPage = () => {
           <Mail className="mx-auto mb-4 text-blue-600" size={40} />
 
           <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">
+<<<<<<< HEAD
             Email trimis!
           </h2>
 
           <p className="text-slate-600 dark:text-slate-300 mb-6">
             Verifică inbox-ul pentru linkul de resetare a parolei.
+=======
+            {t("forgotPassword.success.title")}
+          </h2>
+
+          <p className="text-slate-600 dark:text-slate-300 mb-6">
+            {t("forgotPassword.success.message")}
+>>>>>>> upstream/main
           </p>
 
           <Link
             to="/login"
             className="inline-block text-blue-600 hover:underline font-medium"
           >
+<<<<<<< HEAD
             Înapoi la Login
+=======
+            {t("forgotPassword.success.backToLogin")}
+>>>>>>> upstream/main
           </Link>
         </div>
       </div>
@@ -61,17 +88,29 @@ const ForgotPasswordPage = () => {
         </button>
 
         <h1 className="text-3xl font-bold text-center text-slate-900 dark:text-white mb-2">
+<<<<<<< HEAD
           Ai uitat parola?
         </h1>
 
         <p className="text-center text-slate-500 dark:text-slate-300 mb-8">
           Introdu adresa de email și îți vom trimite un link de resetare.
+=======
+          {t("forgotPassword.title")}
+        </h1>
+
+        <p className="text-center text-slate-500 dark:text-slate-300 mb-8">
+          {t("forgotPassword.subtitle")}
+>>>>>>> upstream/main
         </p>
 
         <form onSubmit={handleSubmit} className="space-y-5">
           <div>
             <label className="block text-sm font-medium mb-1 text-slate-700 dark:text-slate-300">
+<<<<<<< HEAD
               Email
+=======
+              {t("forgotPassword.form.emailLabel")}
+>>>>>>> upstream/main
             </label>
             <input
               type="email"
@@ -100,14 +139,24 @@ const ForgotPasswordPage = () => {
             disabled={!email}
             className="w-full bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-white py-3 rounded-lg transition"
           >
+<<<<<<< HEAD
             Trimite link
+=======
+            {t("forgotPassword.form.submitButton")}
+>>>>>>> upstream/main
           </button>
         </form>
 
         <p className="text-center text-sm mt-6 text-slate-500 dark:text-slate-300">
+<<<<<<< HEAD
           Ți-ai amintit parola?{" "}
           <Link to="/login" className="text-blue-600 hover:underline">
             Autentifică-te
+=======
+          {t("forgotPassword.rememberPassword")}{" "}
+          <Link to="/login" className="text-blue-600 hover:underline">
+            {t("forgotPassword.loginLink")}
+>>>>>>> upstream/main
           </Link>
         </p>
       </div>

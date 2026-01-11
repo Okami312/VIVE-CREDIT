@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import React, { useState } from "react";
+=======
+import React, { useState, useEffect } from 'react';
+>>>>>>> upstream/main
 import {
   Calculator,
   DollarSign,
@@ -6,11 +10,19 @@ import {
   TrendingDown,
   Loader2,
   AlertCircle,
+<<<<<<< HEAD
 } from "lucide-react";
 import type {
   ScoringInput,
   ScoringResult,
 } from "@modules/scoring/types/scoringCalculator.types";
+=======
+} from 'lucide-react';
+import type {
+  ScoringInput,
+  ScoringResult,
+} from '@modules/scoring/types/scoringCalculator.types';
+>>>>>>> upstream/main
 import {
   getScoreColorClass,
   getScoreBgClass,
@@ -18,7 +30,11 @@ import {
   getEligibilityIcon,
   getScoreRangeLabel,
   formatRON,
+<<<<<<< HEAD
 } from "@modules/scoring/utils/scoringCalculator.utils";
+=======
+} from '@modules/scoring/utils/scoringCalculator.utils';
+>>>>>>> upstream/main
 
 interface ScoringCalculatorProps {
   onCalculate: (input: ScoringInput) => Promise<ScoringResult | null>;
@@ -26,6 +42,14 @@ interface ScoringCalculatorProps {
   result: ScoringResult | null;
   error: string | null;
   onReset: () => void;
+<<<<<<< HEAD
+=======
+  initialData?: {
+    salariu: number;
+    cheltuieli: number;
+    datorii: number;
+  };
+>>>>>>> upstream/main
 }
 
 export const ScoringCalculator: React.FC<ScoringCalculatorProps> = ({
@@ -34,6 +58,7 @@ export const ScoringCalculator: React.FC<ScoringCalculatorProps> = ({
   result,
   error,
   onReset,
+<<<<<<< HEAD
 }) => {
   const [input, setInput] = useState<ScoringInput>({
     salariu: 5000,
@@ -41,6 +66,30 @@ export const ScoringCalculator: React.FC<ScoringCalculatorProps> = ({
     datorii: 800,
   });
 
+=======
+  initialData,
+}) => {
+  const [input, setInput] = useState<ScoringInput>({
+    salariu: initialData?.salariu || 5000,
+    cheltuieli: initialData?.cheltuieli || 1500,
+    datorii: initialData?.datorii || 800,
+  });
+
+  // Calculează automat dacă există date inițiale
+  useEffect(() => {
+    if (initialData) {
+      const data = {
+        salariu: initialData.salariu,
+        cheltuieli: initialData.cheltuieli,
+        datorii: initialData.datorii,
+      };
+      setInput(data);
+      // Calculează automat
+      onCalculate(data);
+    }
+  }, [initialData]);
+
+>>>>>>> upstream/main
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     await onCalculate(input);
@@ -231,8 +280,13 @@ export const ScoringCalculator: React.FC<ScoringCalculatorProps> = ({
             <div
               className={`rounded-xl p-4 border ${
                 result.eligibil
+<<<<<<< HEAD
                   ? "bg-green-50 border-green-200"
                   : "bg-red-50 border-red-200"
+=======
+                  ? 'bg-green-50 border-green-200'
+                  : 'bg-red-50 border-red-200'
+>>>>>>> upstream/main
               }`}
             >
               <div className="flex items-center gap-3">
@@ -240,10 +294,17 @@ export const ScoringCalculator: React.FC<ScoringCalculatorProps> = ({
                 <div>
                   <p
                     className={`font-semibold ${
+<<<<<<< HEAD
                       result.eligibil ? "text-green-800" : "text-red-800"
                     }`}
                   >
                     {result.eligibil ? "Client Eligibil" : "Client Neeligibil"}
+=======
+                      result.eligibil ? 'text-green-800' : 'text-red-800'
+                    }`}
+                  >
+                    {result.eligibil ? 'Client Eligibil' : 'Client Neeligibil'}
+>>>>>>> upstream/main
                   </p>
                   {result.sumaMaximaCredit && (
                     <p className="text-sm text-green-700">

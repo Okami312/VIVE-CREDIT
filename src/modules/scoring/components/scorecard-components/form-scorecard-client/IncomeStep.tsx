@@ -42,7 +42,14 @@ export default function IncomeStep({ data, updateData, onNext }: any) {
           />
         </div>
         <div className="mb-6 space-y-2">
+<<<<<<< HEAD
           <Label className="dark:text-slate-300">Alte venituri (Ron)</Label>
+=======
+          <Label className="dark:text-slate-300">
+            Alte venituri (Ron){' '}
+            <span className="text-slate-600 text-[10px] ">(Opțional)</span>
+          </Label>
+>>>>>>> upstream/main
           <Input
             type="number"
             placeholder="Ex: 2000"

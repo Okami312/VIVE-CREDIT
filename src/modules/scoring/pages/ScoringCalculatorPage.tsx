@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import React, { useState, useEffect } from "react";
 import { Calculator, History, BarChart3, TrendingUp } from "lucide-react";
 import { useScoringCalculator } from "../hooks/useScoringCalculator";
@@ -10,6 +11,23 @@ type TabType = "calculator" | "history" | "statistics";
 
 export const ScoringCalculatorPage: React.FC = () => {
   const [activeTab, setActiveTab] = useState<TabType>("calculator");
+=======
+import React, { useState, useEffect } from 'react';
+import { Calculator, History, BarChart3, TrendingUp } from 'lucide-react';
+import { useScoringCalculator } from '../hooks/useScoringCalculator';
+import { ScoringCalculator } from '../components/ScoringCalculator/ScoringCalculator';
+import { ScoringHistoryCard } from '../components/ScoringCalculator/ScoringHistoryCard';
+import type { ScoreRange } from '../types/scoringCalculator.types';
+import { getScoreRangeLabel } from '../utils/scoringCalculator.utils';
+import { useLocation } from 'react-router-dom';
+
+type TabType = 'calculator' | 'history' | 'statistics';
+
+export const ScoringCalculatorPage: React.FC = () => {
+  const location = useLocation();
+  const formDataFromScorecard = location.state?.formData;
+  const [activeTab, setActiveTab] = useState<TabType>('calculator');
+>>>>>>> upstream/main
 
   const {
     isCalculating,
@@ -33,6 +51,7 @@ export const ScoringCalculatorPage: React.FC = () => {
 
   const tabs = [
     {
+<<<<<<< HEAD
       id: "calculator" as TabType,
       label: "Calculator",
       icon: <Calculator className="w-4 h-4" />,
@@ -50,6 +69,25 @@ export const ScoringCalculatorPage: React.FC = () => {
       label: "Statistici",
       icon: <BarChart3 className="w-4 h-4" />,
       description: "Analiză date",
+=======
+      id: 'calculator' as TabType,
+      label: 'Calculator',
+      icon: <Calculator className="w-4 h-4" />,
+      description: 'Tool interactiv',
+    },
+    {
+      id: 'history' as TabType,
+      label: 'Istoric',
+      icon: <History className="w-4 h-4" />,
+      description: 'Calcule anterioare',
+      badge: history.length,
+    },
+    {
+      id: 'statistics' as TabType,
+      label: 'Statistici',
+      icon: <BarChart3 className="w-4 h-4" />,
+      description: 'Analiză date',
+>>>>>>> upstream/main
     },
   ];
 
@@ -81,8 +119,13 @@ export const ScoringCalculatorPage: React.FC = () => {
               onClick={() => setActiveTab(tab.id)}
               className={`flex items-center gap-2 px-4 py-3 rounded-lg font-medium text-sm transition-colors whitespace-nowrap relative ${
                 activeTab === tab.id
+<<<<<<< HEAD
                   ? "bg-white text-[#2e57e1] shadow-sm"
                   : "text-gray-600 hover:text-gray-800"
+=======
+                  ? 'bg-white text-[#2e57e1] shadow-sm'
+                  : 'text-gray-600 hover:text-gray-800'
+>>>>>>> upstream/main
               }`}
             >
               {tab.icon}
@@ -101,7 +144,11 @@ export const ScoringCalculatorPage: React.FC = () => {
           {/* Main Content */}
           <div className="lg:col-span-2">
             {/* Calculator Tab */}
+<<<<<<< HEAD
             {activeTab === "calculator" && (
+=======
+            {activeTab === 'calculator' && (
+>>>>>>> upstream/main
               <div>
                 {/* Info Card */}
                 <div className="bg-blue-50 border border-blue-200 rounded-xl p-5 mb-6">
@@ -129,12 +176,13 @@ export const ScoringCalculatorPage: React.FC = () => {
                   result={result}
                   error={error}
                   onReset={resetResult}
+                  initialData={formDataFromScorecard}
                 />
               </div>
             )}
 
             {/* History Tab */}
-            {activeTab === "history" && (
+            {activeTab === 'history' && (
               <div>
                 <div className="bg-purple-50 border border-purple-200 rounded-xl p-5 mb-6">
                   <div className="flex items-start gap-3">
@@ -173,7 +221,11 @@ export const ScoringCalculatorPage: React.FC = () => {
             )}
 
             {/* Statistics Tab */}
+<<<<<<< HEAD
             {activeTab === "statistics" && (
+=======
+            {activeTab === 'statistics' && (
+>>>>>>> upstream/main
               <div>
                 <div className="bg-green-50 border border-green-200 rounded-xl p-5 mb-6">
                   <div className="flex items-start gap-3">
@@ -244,11 +296,19 @@ export const ScoringCalculatorPage: React.FC = () => {
                             const percentage =
                               (count / statistics.totalCalculations) * 100;
                             const colorClass =
+<<<<<<< HEAD
                               range === "VERY_HIGH" || range === "HIGH"
                                 ? "bg-green-500"
                                 : range === "MEDIUM"
                                 ? "bg-yellow-500"
                                 : "bg-red-500";
+=======
+                              range === 'VERY_HIGH' || range === 'HIGH'
+                                ? 'bg-green-500'
+                                : range === 'MEDIUM'
+                                ? 'bg-yellow-500'
+                                : 'bg-red-500';
+>>>>>>> upstream/main
 
                             return (
                               <div key={range}>
@@ -342,7 +402,11 @@ export const ScoringCalculatorPage: React.FC = () => {
                   <div className="flex justify-between">
                     <span className="opacity-90">Status:</span>
                     <span className="font-bold">
+<<<<<<< HEAD
                       {result.eligibil ? "✓ Eligibil" : "✗ Neeligibil"}
+=======
+                      {result.eligibil ? '✓ Eligibil' : '✗ Neeligibil'}
+>>>>>>> upstream/main
                     </span>
                   </div>
                 </div>

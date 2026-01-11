@@ -24,7 +24,14 @@ export default function ExpensesStep({
       </CardHeader>
       <CardContent>
         <div className="mb-6 space-y-2">
+<<<<<<< HEAD
           <Label className="dark:text-slate-300">Chirie</Label>
+=======
+          <Label className="dark:text-slate-300">
+            Chirie{' '}
+            <span className="text-slate-600 text-[10px] ">(Opțional)</span>
+          </Label>
+>>>>>>> upstream/main
           <Input
             type="number"
             placeholder="Ex: 1000 Ron"
@@ -82,7 +89,14 @@ export default function ExpensesStep({
           />
         </div>
         <div className="mb-6 space-y-2">
+<<<<<<< HEAD
           <Label className="dark:text-slate-300">Rate Existente</Label>
+=======
+          <Label className="dark:text-slate-300">
+            Rate Existente{' '}
+            <span className="text-slate-600 text-[10px] ">(Opțional)</span>
+          </Label>
+>>>>>>> upstream/main
           <Input
             type="number"
             placeholder="Ex: 1100 Ron"

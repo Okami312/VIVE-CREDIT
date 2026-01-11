@@ -1,8 +1,15 @@
 import { Button } from '@/components/ui/button';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { useState } from 'react';
+<<<<<<< HEAD
 
 export default function SummaryStep({ data, onBack }: any) {
+=======
+import { useNavigate } from 'react-router-dom';
+
+export default function SummaryStep({ data, onBack }: any) {
+  const navigate = useNavigate();
+>>>>>>> upstream/main
   const [saveStatus, setSaveStatus] = useState<'saving' | 'saved' | ''>('');
 
   const totalIncome =
@@ -24,15 +31,34 @@ export default function SummaryStep({ data, onBack }: any) {
 
       setSaveStatus('saved');
 
+<<<<<<< HEAD
       // Reîncarcă pagina după 2 secunde
       setTimeout(() => {
         window.location.reload();
       }, 2000);
+=======
+      // Navighează către calculator cu datele
+      setTimeout(() => {
+        navigate('/calculator', {
+          state: {
+            formData: {
+              salariu: totalIncome,
+              cheltuieli: totalExpenses - (+data.expenses.existingRates || 0),
+              datorii: +data.expenses.existingRates || 0,
+            },
+          },
+        });
+      }, 1000);
+>>>>>>> upstream/main
     }, 500);
   };
 
   return (
+<<<<<<< HEAD
     <Card className="bg-slate-800">
+=======
+    <Card className="dark:bg-slate-800">
+>>>>>>> upstream/main
       <CardHeader>
         <CardTitle className="text-2xl text-center font-semibold text-blue-700 dark:text-blue-400">
           Rezumat
@@ -58,7 +84,11 @@ export default function SummaryStep({ data, onBack }: any) {
           )}
           {saveStatus === 'saved' && (
             <p className="text-sm text-green-500 animate-in fade-in duration-300">
+<<<<<<< HEAD
               ✓ Datele au fost salvate cu succes!
+=======
+              ✓ Datele au fost salvate! Redirecționare...
+>>>>>>> upstream/main
             </p>
           )}
         </div>
@@ -77,7 +107,11 @@ export default function SummaryStep({ data, onBack }: any) {
             className="px-6 text-white bg-blue-600 hover:bg-blue-700"
             disabled={saveStatus === 'saving'}
           >
+<<<<<<< HEAD
             Salvează
+=======
+            Salvează și Calculează
+>>>>>>> upstream/main
           </Button>
         </div>
       </CardContent>
