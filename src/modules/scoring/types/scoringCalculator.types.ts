@@ -34,13 +34,26 @@ export interface ScoringResult {
 }
 
 export interface ScoringHistory {
-  id: string;
-  clientId?: string;
+  title: string;
+  description: string;
   clientName?: string;
-  input: ScoringInput;
-  result: ScoringResult;
+  clientId?: string;
   calculatedAt: string;
   calculatedBy: string;
+  input: {
+    salariu: number;
+    cheltuieli: number;
+    datorii: number;
+  };
+  result: {
+    score: number;
+    eligibil: boolean;
+    scoreRange: string;
+    scoreColor: "GREEN" | "YELLOW" | "RED";
+    sumaMaximaCredit?: number;
+    explicatie: string;
+    rataIndatorare: number;
+  };
 }
 
 export interface ScoringStatistics {

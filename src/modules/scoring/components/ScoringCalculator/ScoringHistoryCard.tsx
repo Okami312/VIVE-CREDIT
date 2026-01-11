@@ -1,3 +1,5 @@
+// src/modules/scoring/components/ScoringHistoryCard.tsx
+
 import React, { useState } from "react";
 import { ChevronDown, ChevronUp, Calendar } from "lucide-react";
 import type { ScoringHistory } from "@modules/scoring/types/scoringCalculator.types";
@@ -6,149 +8,198 @@ import {
   getEligibilityIcon,
   getScoreRangeLabel,
   formatRON,
-  getScoreBgClass,
+  getScoreColorClass,
 } from "@modules/scoring/utils/scoringCalculator.utils";
+import type { ScoreRange } from "@modules/scoring/types/scoringCalculator.types";
 
-interface ScoringHistoryCardProps {
-  entry: ScoringHistory;
+export interface ScoringHistoryCardProps {
+  data: ScoringHistory; // Add this property
+  isDarkMode: boolean;
+  onSelect: () => void;
 }
 
-export const ScoringHistoryCard: React.FC<ScoringHistoryCardProps> = ({
-  entry,
+// Ensure the component uses the updated props
+const ScoringHistoryCard: React.FC<ScoringHistoryCardProps> = ({
+  data,
+  isDarkMode,
+  onSelect,
 }) => {
   const [isExpanded, setIsExpanded] = useState(false);
 
   return (
-    <div className="bg-white border border-gray-200 rounded-xl overflow-hidden hover:shadow-md transition-shadow">
-      {/* Header */}
+    <div
+      className={`p-4 rounded-lg shadow-md ${
+        isDarkMode ? "bg-[#1e293b] text-white" : "bg-gray-50 text-gray-800"
+      }`}
+      onClick={onSelect}
+    >
+      <h3 className="text-lg font-semibold">{data.title}</h3>
+      <p className="text-sm">{data.description}</p>
+
+      {/* Header - Dark Mode */}
       <button
         onClick={() => setIsExpanded(!isExpanded)}
-        className="w-full p-5 flex items-center justify-between hover:bg-gray-50 transition-colors"
+        className="w-full p-4 sm:p-5 flex items-center justify-between hover:bg-[#1a2538] transition-colors"
       >
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-3 sm:gap-4">
           <div
-            className={`w-12 h-12 rounded-xl flex items-center justify-center ${
-              entry.result.eligibil ? "bg-green-50" : "bg-red-50"
+            className={`w-10 h-10 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center ${
+              data.result.eligibil ? "bg-green-500/20" : "bg-red-500/20"
             }`}
           >
-            {getScoreIcon(entry.result.scoreRange)}
+            {getScoreIcon(data.result.scoreRange as ScoreRange)}{" "}
+            {/* Type assertion */}
           </div>
           <div className="text-left">
-            {entry.clientName && (
-              <p className="font-semibold text-gray-800">{entry.clientName}</p>
+            {data.clientName && (
+              <p className="font-semibold text-white text-sm sm:text-base">
+                {data.clientName}
+              </p>
             )}
-            {entry.clientId && (
-              <p className="text-sm text-gray-500">{entry.clientId}</p>
+            {data.clientId && (
+              <p className="text-xs sm:text-sm text-gray-400">
+                {data.clientId}
+              </p>
             )}
-            {!entry.clientName && !entry.clientId && (
-              <p className="text-sm text-gray-500">Calcul anonim</p>
+            {!data.clientName && !data.clientId && (
+              <p className="text-xs sm:text-sm text-gray-400">Calcul anonim</p>
             )}
-            <div className="flex items-center gap-2 text-xs text-gray-400 mt-1">
+            <div className="flex items-center gap-2 text-[10px] sm:text-xs text-gray-500 mt-1">
               <Calendar className="w-3 h-3" />
-              <span>{entry.calculatedAt}</span>
+              <span>{data.calculatedAt}</span>
             </div>
           </div>
         </div>
 
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-3 sm:gap-4">
           <div className="text-right">
-            <p className="text-2xl font-bold text-gray-800">
-              {entry.result.score}
+            <p className="text-xl sm:text-2xl font-bold text-white">
+              {data.result.score}
             </p>
-            <p className="text-xs text-gray-500">
-              {getScoreRangeLabel(entry.result.scoreRange)}
+            <p className="text-[10px] sm:text-xs text-gray-400">
+              {getScoreRangeLabel(data.result.scoreRange as ScoreRange)}
             </p>
           </div>
           {isExpanded ? (
-            <ChevronUp className="w-5 h-5 text-gray-400" />
+            <ChevronUp className="w-4 h-4 sm:w-5 sm:h-5 text-gray-400 flex-shrink-0" />
           ) : (
-            <ChevronDown className="w-5 h-5 text-gray-400" />
+            <ChevronDown className="w-4 h-4 sm:w-5 sm:h-5 text-gray-400 flex-shrink-0" />
           )}
         </div>
       </button>
 
-      {/* Expanded Content */}
+      {/* Expanded Content - Dark Mode */}
       {isExpanded && (
-        <div className="border-t border-gray-100">
-          {/* Input Data */}
-          <div className="p-5 bg-gray-50">
-            <h4 className="font-semibold text-gray-800 mb-3 text-sm">
+        <div className="border-t border-[#233248]">
+          {/* Input Data - Dark Mode */}
+          <div className="p-4 sm:p-5 bg-[#0f172a]">
+            <h4 className="font-semibold text-white mb-3 text-xs sm:text-sm">
               Date introduse
             </h4>
-            <div className="grid grid-cols-3 gap-4">
+            <div className="grid grid-cols-3 gap-3 sm:gap-4">
               <div>
-                <p className="text-xs text-gray-500 mb-1">Salariu</p>
-                <p className="font-semibold text-gray-800">
-                  {formatRON(entry.input.salariu)}
+                <p className="text-[10px] sm:text-xs text-gray-500 mb-1">
+                  Salariu
+                </p>
+                <p className="font-semibold text-white text-xs sm:text-sm">
+                  {formatRON(data.input.salariu)}
                 </p>
               </div>
               <div>
-                <p className="text-xs text-gray-500 mb-1">Cheltuieli</p>
-                <p className="font-semibold text-gray-800">
-                  {formatRON(entry.input.cheltuieli)}
+                <p className="text-[10px] sm:text-xs text-gray-500 mb-1">
+                  Cheltuieli
+                </p>
+                <p className="font-semibold text-white text-xs sm:text-sm">
+                  {formatRON(data.input.cheltuieli)}
                 </p>
               </div>
               <div>
-                <p className="text-xs text-gray-500 mb-1">Datorii</p>
-                <p className="font-semibold text-gray-800">
-                  {formatRON(entry.input.datorii)}
+                <p className="text-[10px] sm:text-xs text-gray-500 mb-1">
+                  Datorii
+                </p>
+                <p className="font-semibold text-white text-xs sm:text-sm">
+                  {formatRON(data.input.datorii)}
                 </p>
               </div>
             </div>
           </div>
 
-          {/* Results */}
-          <div className="p-5 space-y-3">
-            {/* Score Bar */}
+          {/* Results - Dark Mode */}
+          <div className="p-4 sm:p-5 space-y-3">
+            {/* Score Bar - Dark Mode */}
             <div
-              className={`p-4 rounded-xl border ${getScoreBgClass(
-                entry.result.scoreColor
-              )}`}
+              className={`p-3 sm:p-4 rounded-xl border ${
+                data.result.scoreColor === "GREEN"
+                  ? "bg-green-500/10 border-green-500/30"
+                  : data.result.scoreColor === "YELLOW"
+                  ? "bg-yellow-500/10 border-yellow-500/30"
+                  : "bg-red-500/10 border-red-500/30"
+              }`}
             >
               <div className="flex items-center justify-between mb-2">
-                <span className="text-sm font-medium text-gray-700">
+                <span className="text-xs sm:text-sm font-medium text-gray-300">
                   Scor Final
                 </span>
-                <span className="text-xl font-bold text-gray-800">
-                  {entry.result.score}
+                <span className="text-lg sm:text-xl font-bold text-white">
+                  {data.result.score}
                 </span>
               </div>
-              <div className="w-full h-2 bg-gray-200 rounded-full overflow-hidden">
+              <div className="w-full h-1.5 sm:h-2 bg-[#0f172a] rounded-full overflow-hidden">
                 <div
-                  className="h-full bg-gray-800 transition-all rounded-full"
-                  style={{ width: `${entry.result.score}%` }}
+                  className={`h-full ${getScoreColorClass(
+                    data.result.scoreColor
+                  )} transition-all rounded-full`}
+                  style={{ width: `${data.result.score}%` }}
                 />
               </div>
             </div>
 
-            {/* Eligibility */}
+            {/* Eligibility - Dark Mode */}
             <div
-              className={`p-3 rounded-xl flex items-center gap-3 ${
-                entry.result.eligibil
-                  ? "bg-green-50 border border-green-200"
-                  : "bg-red-50 border border-red-200"
+              className={`p-3 rounded-xl flex items-center gap-2 sm:gap-3 ${
+                data.result.eligibil
+                  ? "bg-green-500/10 border border-green-500/30"
+                  : "bg-red-500/10 border border-red-500/30"
               }`}
             >
-              {getEligibilityIcon(entry.result.eligibil)}
-              <div>
+              {getEligibilityIcon(data.result.eligibil)}
+              <div className="flex-1 min-w-0">
                 <p
-                  className={`font-medium text-sm ${
-                    entry.result.eligibil ? "text-green-800" : "text-red-800"
+                  className={`font-medium text-xs sm:text-sm ${
+                    data.result.eligibil ? "text-green-400" : "text-red-400"
                   }`}
                 >
-                  {entry.result.eligibil ? "Eligibil" : "Neeligibil"}
+                  {data.result.eligibil ? "Eligibil ✓" : "Neeligibil"}
                 </p>
-                {entry.result.sumaMaximaCredit && (
-                  <p className="text-xs text-green-600">
-                    Max: {formatRON(entry.result.sumaMaximaCredit)}
+                {data.result.sumaMaximaCredit && (
+                  <p className="text-[10px] sm:text-xs text-green-300 mt-0.5 break-words">
+                    Max: {formatRON(data.result.sumaMaximaCredit)}
                   </p>
                 )}
               </div>
             </div>
 
-            {/* Explanation */}
-            <div className="text-sm text-gray-600 bg-gray-50 p-3 rounded-lg">
-              {entry.result.explicatie}
+            {/* Explanation - Dark Mode */}
+            <div className="text-xs sm:text-sm text-gray-400 bg-[#0f172a] border border-[#233248] p-3 rounded-lg leading-relaxed break-words">
+              {data.result.explicatie}
+            </div>
+
+            {/* Additional Info - Dark Mode */}
+            <div className="pt-3 border-t border-[#233248]">
+              <div className="flex items-center justify-between text-[10px] sm:text-xs text-gray-500">
+                <span>
+                  Rată îndatorare:{" "}
+                  <span className="text-gray-300 font-medium">
+                    {(data.result.rataIndatorare * 100).toFixed(1)}%
+                  </span>
+                </span>
+                <span>
+                  Calculat de:{" "}
+                  <span className="text-gray-300 font-medium">
+                    {data.calculatedBy}
+                  </span>
+                </span>
+              </div>
             </div>
           </div>
         </div>
@@ -156,3 +207,5 @@ export const ScoringHistoryCard: React.FC<ScoringHistoryCardProps> = ({
     </div>
   );
 };
+
+export default ScoringHistoryCard;

@@ -1,18 +1,29 @@
-import React, { useState, useEffect } from 'react';
-import { Calculator, History, BarChart3, TrendingUp } from 'lucide-react';
-import { useScoringCalculator } from '../hooks/useScoringCalculator';
-import { ScoringCalculator } from '../components/ScoringCalculator/ScoringCalculator';
-import { ScoringHistoryCard } from '../components/ScoringCalculator/ScoringHistoryCard';
-import type { ScoreRange } from '../types/scoringCalculator.types';
-import { getScoreRangeLabel } from '../utils/scoringCalculator.utils';
-import { useLocation } from 'react-router-dom';
+// src/modules/scoring/pages/ScoringCalculatorPage.tsx
 
-type TabType = 'calculator' | 'history' | 'statistics';
+import React, { useState, useEffect } from "react";
+import {
+  Calculator,
+  History,
+  BarChart3,
+  TrendingUp,
+  Menu,
+  X,
+} from "lucide-react";
+import { useScoringCalculator } from "../hooks/useScoringCalculator";
+import { ScoringCalculator } from "@modules/scoring/components/ScoringCalculator/ScoringCalculator";
+import ScoringHistoryCard from "@modules/scoring/components/ScoringCalculator/ScoringHistoryCard";
+import { ScoreRange } from "../types/scoringCalculator.types";
+import { getScoreRangeLabel } from "../utils/scoringCalculator.utils";
+
+type TabType = "calculator" | "history" | "statistics";
 
 export const ScoringCalculatorPage: React.FC = () => {
-  const location = useLocation();
-  const formDataFromScorecard = location.state?.formData;
-  const [activeTab, setActiveTab] = useState<TabType>('calculator');
+  const [activeTab, setActiveTab] = useState<TabType>("calculator");
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(() => {
+    // Check localStorage for the saved theme preference
+    return localStorage.getItem("theme") === "dark";
+  });
 
   const {
     isCalculating,
@@ -28,333 +39,434 @@ export const ScoringCalculatorPage: React.FC = () => {
     resetResult,
   } = useScoringCalculator();
 
-  // Încarcă datele la mount
   useEffect(() => {
     fetchHistory();
     fetchStatistics();
   }, [fetchHistory, fetchStatistics]);
 
+  useEffect(() => {
+    setIsSidebarOpen(false);
+  }, [activeTab]);
+
+  // Apply the theme class to the root element
+  useEffect(() => {
+    const root = document.documentElement;
+    if (isDarkMode) {
+      root.classList.add("dark");
+      localStorage.setItem("theme", "dark");
+    } else {
+      root.classList.remove("dark");
+      localStorage.setItem("theme", "light");
+    }
+  }, [isDarkMode]);
+
   const tabs = [
     {
-      id: 'calculator' as TabType,
-      label: 'Calculator',
+      id: "calculator" as TabType,
+      label: "Calculator",
       icon: <Calculator className="w-4 h-4" />,
-      description: 'Tool interactiv',
+      description: "Tool interactiv",
     },
     {
-      id: 'history' as TabType,
-      label: 'Istoric',
+      id: "history" as TabType,
+      label: "Istoric",
       icon: <History className="w-4 h-4" />,
-      description: 'Calcule anterioare',
+      description: "Calcule anterioare",
       badge: history.length,
     },
     {
-      id: 'statistics' as TabType,
-      label: 'Statistici',
+      id: "statistics" as TabType,
+      label: "Statistici",
       icon: <BarChart3 className="w-4 h-4" />,
-      description: 'Analiză date',
+      description: "Analiză date",
     },
   ];
 
   return (
-    <div className="p-8">
-      <div className="max-w-6xl mx-auto">
-        {/* Header */}
-        <div className="mb-8">
-          <div className="flex items-center gap-4 mb-3">
-            <div className="w-16 h-16 bg-[#2e57e1] rounded-2xl flex items-center justify-center">
-              <TrendingUp className="w-8 h-8 text-white" />
+    <div
+      className={`min-h-screen ${
+        isDarkMode ? "bg-[#0f172a] text-white" : "bg-white text-gray-900"
+      }`}
+    >
+      {/* Mobile Header */}
+      <div
+        className={`lg:hidden sticky top-0 z-30 ${
+          isDarkMode
+            ? "bg-[#172131] border-[#233248]"
+            : "bg-gray-100 border-gray-300"
+        } border-b px-4 py-3`}
+      >
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            {/* Back Button */}
+            <button
+              onClick={() => window.history.back()}
+              className={`w-10 h-10 ${
+                isDarkMode
+                  ? "bg-[#233248] hover:bg-[#2e3a4d]"
+                  : "bg-gray-200 hover:bg-gray-300"
+              } rounded-xl flex items-center justify-center transition-colors`}
+            >
+              <svg
+                className={`w-5 h-5 ${
+                  isDarkMode ? "text-gray-300" : "text-gray-700"
+                }`}
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M15 19l-7-7 7-7"
+                />
+              </svg>
+            </button>
+            <div
+              className={`w-10 h-10 ${
+                isDarkMode ? "bg-[#2e57e1]" : "bg-blue-500"
+              } rounded-xl flex items-center justify-center`}
+            >
+              <TrendingUp className="w-5 h-5 text-white" />
             </div>
             <div>
-              <h1 className="text-3xl font-bold text-gray-800">
+              <h1
+                className={`text-lg font-bold ${
+                  isDarkMode ? "text-white" : "text-gray-900"
+                }`}
+              >
                 Calculator Scoring
               </h1>
-              <p className="text-gray-500">
-                Calculează și afișează scorul în timp real
+              <p
+                className={`text-xs ${
+                  isDarkMode ? "text-gray-400" : "text-gray-600"
+                }`}
+              >
+                Calculează scorul în timp real
               </p>
             </div>
           </div>
-        </div>
-
-        {/* Tabs */}
-        <div className="flex gap-1 bg-gray-100 p-1 rounded-xl mb-6 w-fit">
-          {tabs.map((tab) => (
+          <div className="flex items-center gap-2">
+            {/* Dark/Light Mode Toggle */}
             <button
-              key={tab.id}
-              onClick={() => setActiveTab(tab.id)}
-              className={`flex items-center gap-2 px-4 py-3 rounded-lg font-medium text-sm transition-colors whitespace-nowrap relative ${
-                activeTab === tab.id
-                  ? 'bg-white text-[#2e57e1] shadow-sm'
-                  : 'text-gray-600 hover:text-gray-800'
-              }`}
+              onClick={() => setIsDarkMode(!isDarkMode)}
+              className={`w-10 h-10 ${
+                isDarkMode
+                  ? "bg-[#233248] hover:bg-[#2e3a4d]"
+                  : "bg-gray-200 hover:bg-gray-300"
+              } rounded-xl flex items-center justify-center transition-colors`}
+              aria-label="Toggle dark mode"
             >
-              {tab.icon}
-              <span>{tab.label}</span>
-              {tab.badge !== undefined && tab.badge > 0 && (
-                <span className="ml-1 px-2 py-0.5 bg-[#2e57e1] text-white text-xs rounded-full">
-                  {tab.badge}
-                </span>
+              {isDarkMode ? (
+                <svg
+                  className="w-5 h-5 text-yellow-400"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+              ) : (
+                <svg
+                  className="w-5 h-5 text-gray-700"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z" />
+                </svg>
               )}
             </button>
-          ))}
+            {/* Menu Toggle */}
+            <button
+              onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+              className="p-2 hover:bg-[#233248] rounded-lg transition-colors"
+            >
+              {isSidebarOpen ? (
+                <X className="w-5 h-5 text-gray-400" />
+              ) : (
+                <Menu className="w-5 h-5 text-gray-400" />
+              )}
+            </button>
+          </div>
         </div>
+      </div>
 
-        {/* Content */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Main Content */}
-          <div className="lg:col-span-2">
-            {/* Calculator Tab */}
-            {activeTab === 'calculator' && (
-              <div>
-                {/* Info Card */}
-                <div className="bg-blue-50 border border-blue-200 rounded-xl p-5 mb-6">
-                  <div className="flex items-start gap-3">
-                    <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                      <Calculator className="w-5 h-5 text-blue-600" />
-                    </div>
-                    <div>
-                      <h3 className="font-semibold text-blue-900 mb-1">
-                        Tool Interactiv de Scoring
-                      </h3>
-                      <p className="text-sm text-blue-700">
-                        Introduceți salariul, cheltuielile și datoriile pentru a
-                        calcula scorul automat. Scorul este calculat pe baza
-                        ratei de îndatorare: (cheltuieli + datorii) / salariu.
-                      </p>
-                    </div>
-                  </div>
+      <div className="p-4 sm:p-6 lg:p-8">
+        <div className="max-w-6xl mx-auto">
+          {/* Desktop Header - Dark Mode with Back Button */}
+          <div className="hidden lg:block mb-8">
+            <div className="flex items-center justify-between mb-3">
+              <div className="flex items-center gap-4">
+                {/* Back Button - Desktop */}
+                <button
+                  onClick={() => window.history.back()}
+                  className="w-12 h-12 bg-[#233248] hover:bg-[#2e3a4d] rounded-xl flex items-center justify-center transition-colors flex-shrink-0"
+                >
+                  <svg
+                    className="w-6 h-6 text-gray-300"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M15 19l-7-7 7-7"
+                    />
+                  </svg>
+                </button>
+                <div className="w-16 h-16 bg-[#2e57e1] rounded-2xl flex items-center justify-center">
+                  <TrendingUp className="w-8 h-8 text-white" />
                 </div>
-
-                {/* Calculator Component */}
-                <ScoringCalculator
-                  onCalculate={calculateScore}
-                  isCalculating={isCalculating}
-                  result={result}
-                  error={error}
-                  onReset={resetResult}
-                  initialData={formDataFromScorecard}
-                />
+                <div>
+                  <h1 className="text-3xl font-bold text-white">
+                    Calculator Scoring
+                  </h1>
+                  <p className="text-gray-400">
+                    Calculează și afișează scorul în timp real
+                  </p>
+                </div>
               </div>
-            )}
 
-            {/* History Tab */}
-            {activeTab === 'history' && (
-              <div>
-                <div className="bg-purple-50 border border-purple-200 rounded-xl p-5 mb-6">
-                  <div className="flex items-start gap-3">
-                    <div className="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                      <History className="w-5 h-5 text-purple-600" />
-                    </div>
-                    <div>
-                      <h3 className="font-semibold text-purple-900 mb-1">
-                        Istoric Calcule
-                      </h3>
-                      <p className="text-sm text-purple-700">
-                        Toate calculele de scoring efectuate anterior. Click pe
-                        un card pentru a vedea detalii.
-                      </p>
-                    </div>
-                  </div>
-                </div>
-
-                {isLoadingHistory ? (
-                  <div className="flex items-center justify-center py-12">
-                    <div className="w-8 h-8 border-2 border-[#2e57e1] border-t-transparent rounded-full animate-spin" />
-                  </div>
-                ) : history.length > 0 ? (
-                  <div className="space-y-4">
-                    {history.map((entry) => (
-                      <ScoringHistoryCard key={entry.id} entry={entry} />
-                    ))}
-                  </div>
+              {/* Dark/Light Mode Toggle - Desktop */}
+              <button
+                onClick={() => setIsDarkMode(!isDarkMode)}
+                className="w-12 h-12 bg-[#233248] hover:bg-[#2e3a4d] rounded-xl flex items-center justify-center transition-colors"
+                aria-label="Toggle dark mode"
+              >
+                {isDarkMode ? (
+                  <svg
+                    className="w-6 h-6 text-yellow-400"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
                 ) : (
-                  <div className="text-center py-12 text-gray-500 bg-white border border-gray-200 rounded-xl">
-                    <History className="w-12 h-12 mx-auto mb-3 text-gray-300" />
-                    <p>Nu există istoric de calcule</p>
-                  </div>
+                  <svg
+                    className="w-6 h-6 text-gray-700"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z" />
+                  </svg>
+                )}
+              </button>
+            </div>
+          </div>
+
+          {/* Tabs - Mobile and Desktop */}
+          <div className="mb-4">
+            <div className="flex overflow-x-auto scrollbar-hide">
+              {tabs.map((tab) => (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveTab(tab.id)}
+                  className={`min-w-[120px] py-2 px-4 rounded-lg flex items-center gap-2 transition-all duration-300 ease-in-out mr-2 ${
+                    activeTab === tab.id
+                      ? "bg-blue-600 text-white shadow-md"
+                      : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                  }`}
+                >
+                  {tab.icon}
+                  <span className="text-sm font-medium">{tab.label}</span>
+                  {tab.badge !== undefined && (
+                    <span
+                      className={`ml-auto inline-flex items-center justify-center w-3 h-3 rounded-full text-xs font-semibold ${
+                        activeTab === tab.id
+                          ? "bg-blue-500 text-white"
+                          : "bg-gray-200 text-gray-800"
+                      }`}
+                    >
+                      {tab.badge}
+                    </span>
+                  )}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Active Tab Content */}
+          <div>
+            {activeTab === "calculator" && (
+              <ScoringCalculator
+                isCalculating={isCalculating}
+                result={result}
+                error={error}
+                onCalculate={calculateScore}
+                onReset={resetResult}
+              />
+            )}
+            {activeTab === "history" && (
+              <div>
+                {isLoadingHistory ? (
+                  <p className="text-center text-gray-500">
+                    Se încarcă istoric...
+                  </p>
+                ) : history.length === 0 ? (
+                  <p className="text-center text-gray-500">
+                    Nu există calcule anterioare.
+                  </p>
+                ) : (
+                  history.map((item, index) => (
+                    <ScoringHistoryCard
+                      key={index}
+                      data={item} // Ensure `item` matches the `ScoringHistory` type
+                      isDarkMode={isDarkMode}
+                      onSelect={() => {
+                        setActiveTab("calculator");
+                        // Pre-fill the calculator with the selected history item
+                      }}
+                    />
+                  ))
                 )}
               </div>
             )}
-
-            {/* Statistics Tab */}
-            {activeTab === 'statistics' && (
+            {activeTab === "statistics" && (
               <div>
-                <div className="bg-green-50 border border-green-200 rounded-xl p-5 mb-6">
-                  <div className="flex items-start gap-3">
-                    <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                      <BarChart3 className="w-5 h-5 text-green-600" />
-                    </div>
-                    <div>
-                      <h3 className="font-semibold text-green-900 mb-1">
-                        Statistici și Analiză
-                      </h3>
-                      <p className="text-sm text-green-700">
-                        Statistici globale despre toate calculele de scoring
-                        efectuate.
-                      </p>
-                    </div>
-                  </div>
-                </div>
-
                 {isLoadingStatistics ? (
-                  <div className="flex items-center justify-center py-12">
-                    <div className="w-8 h-8 border-2 border-[#2e57e1] border-t-transparent rounded-full animate-spin" />
-                  </div>
-                ) : statistics ? (
-                  <div className="space-y-6">
-                    {/* Stats Grid */}
-                    <div className="grid grid-cols-2 gap-4">
-                      <div className="bg-white border border-gray-200 rounded-xl p-5">
-                        <p className="text-sm text-gray-500 mb-1">
-                          Total calcule
-                        </p>
-                        <p className="text-3xl font-bold text-gray-800">
-                          {statistics.totalCalculations}
-                        </p>
-                      </div>
-
-                      <div className="bg-white border border-gray-200 rounded-xl p-5">
-                        <p className="text-sm text-gray-500 mb-1">Scor mediu</p>
-                        <p className="text-3xl font-bold text-gray-800">
-                          {statistics.averageScore.toFixed(1)}
-                        </p>
-                      </div>
-
-                      <div className="bg-white border border-gray-200 rounded-xl p-5">
-                        <p className="text-sm text-gray-500 mb-1">
-                          Rată eligibilitate
-                        </p>
-                        <p className="text-3xl font-bold text-green-600">
-                          {statistics.eligibilityRate}%
-                        </p>
-                      </div>
-
-                      <div className="bg-white border border-gray-200 rounded-xl p-5">
-                        <p className="text-sm text-gray-500 mb-1">DTI mediu</p>
-                        <p className="text-3xl font-bold text-gray-800">
-                          {(statistics.averageDebtRatio * 100).toFixed(1)}%
-                        </p>
-                      </div>
-                    </div>
-
-                    {/* Distribution */}
-                    <div className="bg-white border border-gray-200 rounded-xl p-6">
-                      <h3 className="font-semibold text-gray-800 mb-4">
-                        Distribuție pe categorii
-                      </h3>
-                      <div className="space-y-3">
-                        {Object.entries(statistics.distributionByRange).map(
-                          ([range, count]) => {
-                            const percentage =
-                              (count / statistics.totalCalculations) * 100;
-                            const colorClass =
-                              range === 'VERY_HIGH' || range === 'HIGH'
-                                ? 'bg-green-500'
-                                : range === 'MEDIUM'
-                                ? 'bg-yellow-500'
-                                : 'bg-red-500';
-
-                            return (
-                              <div key={range}>
-                                <div className="flex items-center justify-between mb-1">
-                                  <span className="text-sm font-medium text-gray-700">
-                                    {getScoreRangeLabel(range as ScoreRange)}
-                                  </span>
-                                  <span className="text-sm text-gray-600">
-                                    {count} ({percentage.toFixed(1)}%)
-                                  </span>
-                                </div>
-                                <div className="w-full h-2 bg-gray-200 rounded-full overflow-hidden">
-                                  <div
-                                    className={`h-full ${colorClass} transition-all`}
-                                    style={{ width: `${percentage}%` }}
-                                  />
-                                </div>
-                              </div>
-                            );
-                          }
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                ) : null}
-              </div>
-            )}
-          </div>
-
-          {/* Sidebar */}
-          <div className="space-y-6">
-            {/* Formula Card */}
-            <div className="bg-gradient-to-br from-blue-50 to-purple-50 border border-blue-200 rounded-xl p-5">
-              <h3 className="font-semibold text-gray-800 mb-3 text-sm">
-                📐 Formula Scoring
-              </h3>
-              <div className="space-y-2 text-xs">
-                <div className="bg-white/50 rounded-lg p-3 font-mono">
-                  <p className="text-gray-600 mb-1">Rata îndatorare:</p>
-                  <p className="text-[#2e57e1] font-semibold">
-                    (cheltuieli + datorii) / salariu
+                  <p className="text-center text-gray-500">
+                    Se încarcă statistici...
                   </p>
-                </div>
-                <div className="bg-white/50 rounded-lg p-2">
-                  <p className="text-gray-700 font-medium mb-1">
-                    Scor bazat pe rată:
-                  </p>
-                  <ul className="space-y-0.5 text-gray-600">
-                    <li>• &lt; 30% → Scor 85</li>
-                    <li>• 30-40% → Scor 70</li>
-                    <li>• 40-50% → Scor 55</li>
-                    <li>• 50-60% → Scor 40</li>
-                    <li>• &gt; 60% → Scor 25</li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-
-            {/* Color Legend */}
-            <div className="bg-white border border-gray-200 rounded-xl p-5">
-              <h3 className="font-semibold text-gray-800 mb-3 text-sm">
-                🎨 Bară Colorată
-              </h3>
-              <div className="space-y-2 text-xs">
-                <div className="flex items-center gap-2">
-                  <div className="w-4 h-4 bg-red-500 rounded"></div>
-                  <span className="text-gray-700">Roșu (0-40)</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <div className="w-4 h-4 bg-yellow-500 rounded"></div>
-                  <span className="text-gray-700">Galben (41-70)</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <div className="w-4 h-4 bg-green-500 rounded"></div>
-                  <span className="text-gray-700">Verde (71-100)</span>
-                </div>
-              </div>
-            </div>
-
-            {/* Quick Stats */}
-            {result && (
-              <div className="bg-gradient-to-br from-green-500 to-blue-600 rounded-xl p-5 text-white">
-                <h3 className="font-semibold mb-3 text-sm">
-                  ⚡ Ultimul Calcul
-                </h3>
-                <div className="space-y-2 text-sm">
-                  <div className="flex justify-between">
-                    <span className="opacity-90">Scor:</span>
-                    <span className="font-bold">{result.score}</span>
+                ) : (
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    {Array.isArray(statistics) && statistics.map((stat, index) => (
+                      <div
+                        key={index}
+                        className={`p-4 rounded-lg shadow-md transition-all duration-300 ease-in-out ${
+                          isDarkMode
+                            ? "bg-[#1e293b] text-white"
+                            : "bg-gray-50 text-gray-800"
+                        }`}
+                      >
+                        <h3 className="text-lg font-semibold mb-2">
+                          {getScoreRangeLabel(stat.range as ScoreRange)}
+                        </h3>
+                        <p className="text-sm">
+                          Scor mediu:{" "}
+                          <span className="font-semibold">
+                            {stat.averageScore}
+                          </span>
+                        </p>
+                        <p className="text-sm">
+                          Număr de calcule:{" "}
+                          <span className="font-semibold">
+                            {stat.calculationCount}
+                          </span>
+                        </p>
+                      </div>
+                    ))}
                   </div>
-                  <div className="flex justify-between">
-                    <span className="opacity-90">Status:</span>
-                    <span className="font-bold">
-                      {result.eligibil ? '✓ Eligibil' : '✗ Neeligibil'}
-                    </span>
-                  </div>
-                </div>
+                )}
               </div>
             )}
           </div>
         </div>
       </div>
+
+      {/* Sidebar - Mobile */}
+      {isSidebarOpen && (
+        <div
+          className={`lg:hidden fixed inset-0 z-40 bg-black bg-opacity-50 transition-opacity`}
+          onClick={() => setIsSidebarOpen(false)}
+        >
+          <div
+            className={`absolute top-0 right-0 w-64 h-full bg-white dark:bg-[#172131] shadow-lg p-4 transition-transform transform ${
+              isSidebarOpen ? "translate-x-0" : "translate-x-full"
+            }`}
+          >
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center gap-2">
+                <div className="w-10 h-10 bg-[#2e57e1] rounded-xl flex items-center justify-center">
+                  <TrendingUp className="w-6 h-6 text-white" />
+                </div>
+                <h2 className="text-xl font-bold">Calculator Scoring</h2>
+              </div>
+              <button
+                onClick={() => setIsSidebarOpen(false)}
+                className="p-2 rounded-md hover:bg-gray-100 transition-colors"
+                aria-label="Close menu"
+              >
+                <X className="w-5 h-5 text-gray-700" />
+              </button>
+            </div>
+
+            <div className="flex flex-col gap-2">
+              {tabs.map((tab) => (
+                <button
+                  key={tab.id}
+                  onClick={() => {
+                    setActiveTab(tab.id);
+                    setIsSidebarOpen(false);
+                  }}
+                  className={`flex items-center gap-2 p-3 rounded-lg transition-all duration-300 ease-in-out ${
+                    activeTab === tab.id
+                      ? "bg-blue-600 text-white"
+                      : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                  }`}
+                >
+                  {tab.icon}
+                  <span className="text-sm font-medium">{tab.label}</span>
+                  {tab.badge !== undefined && (
+                    <span
+                      className={`ml-auto inline-flex items-center justify-center w-3 h-3 rounded-full text-xs font-semibold ${
+                        activeTab === tab.id
+                          ? "bg-blue-500 text-white"
+                          : "bg-gray-200 text-gray-800"
+                      }`}
+                    >
+                      {tab.badge}
+                    </span>
+                  )}
+                </button>
+              ))}
+            </div>
+
+            <div className="mt-auto">
+              {/* Dark/Light Mode Toggle - Mobile */}
+              <button
+                onClick={() => setIsDarkMode(!isDarkMode)}
+                className="w-full flex items-center gap-2 p-3 rounded-lg transition-all duration-300 ease-in-out bg-gray-100 text-gray-700 hover:bg-gray-200"
+                aria-label="Toggle dark mode"
+              >
+                {isDarkMode ? (
+                  <svg
+                    className="w-5 h-5 text-yellow-400"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                ) : (
+                  <svg
+                    className="w-5 h-5 text-gray-700"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z" />
+                  </svg>
+                )}
+                <span className="text-sm font-medium">
+                  {isDarkMode ? "Light Mode" : "Dark Mode"}
+                </span>
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
