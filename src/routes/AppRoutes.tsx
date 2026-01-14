@@ -29,15 +29,15 @@ import OnboardingPage from '@/modules/onboarding/pages/OnboardingPage';
 import SuccessPage from '@/modules/onboarding/pages/SuccessPage';
 
 /* Dashboard Client */
-import ClientHomePage from "@/modules/dashboard/pages/ClientHomePage";
-import DashboardPage from "@/modules/dashboard/pages/DashboardPage";
-import DocumentsPage from "@/modules/dashboard/pages/DocumentsPage";
-import HelpPage from "@/modules/dashboard/pages/HelpPage";
-import LoanPage from "@/modules/dashboard/pages/LoanPage";
-import PaymentsPage from "@/modules/dashboard/pages/PaymentsPage";
-import UploadDocumentPage from "@/modules/dashboard/pages/UploadDocumentPage";
-import DecisionResultCard from "@/modules/decision-engine/components/DecisionResultCard";
-import LoanForm from "@/pages/loan/LoanForm";
+import ClientHomePage from '@/modules/dashboard/pages/ClientHomePage';
+import DashboardPage from '@/modules/dashboard/pages/DashboardPage';
+import DocumentsPage from '@/modules/dashboard/pages/DocumentsPage';
+import HelpPage from '@/modules/dashboard/pages/HelpPage';
+import LoanPage from '@/modules/dashboard/pages/LoanPage';
+import PaymentsPage from '@/modules/dashboard/pages/PaymentsPage';
+import UploadDocumentPage from '@/modules/dashboard/pages/UploadDocumentPage';
+import DecisionResultCard from '@/modules/decision-engine/components/DecisionResultCard';
+import LoanForm from '@/pages/loan/LoanForm';
 
 /* Operator Dashboard */
 import ProductSettingsPage from '@/modules/admin-products/pages/ProductSettingsPage';
@@ -50,21 +50,22 @@ import ApplicationDetail from '@/modules/operator-dashboard/submodules/sales/App
 import SalesDashboard from '@/modules/operator-dashboard/submodules/sales/SalesDashboard';
 
 /* Engines */
-import { AuditDashboard } from "@/modules/admin-audit/AuditDashboard";
-import DecisionPage from "@/modules/decision-engine/Pages/DecisionPage";
-import { PolicyEnginePage, ScoringCalculatorPage } from "@/modules/scoring";
-import { ScorecardEngine } from "@/modules/scoring/pages/ScorecardEngine";
+import { AuditDashboard } from '@/modules/admin-audit/AuditDashboard';
+import DecisionPage from '@/modules/decision-engine/Pages/DecisionPage';
+import { PolicyEnginePage, ScoringCalculatorPage } from '@/modules/scoring';
+import { ScorecardEngine } from '@/modules/scoring/pages/ScorecardEngine';
 
 /* Protected route */
 
-import ProtectedAdminRoute from "@/components/ProtectedAdminRoute";
-import ProtectedRoute from "@/components/ProtectedRoute";
-import AdminHomePage from "@/modules/admin/pages/AdminHomePage";
-import UsersPage from "@/modules/admin/pages/UsersPage";
-import RequestLoanPage from "@/modules/applications/pages/RequestLoanPage";
-import AdminLoginPage from "@/modules/auth/pages/AdminLoginPage";
-import { ApplicationsContextProvider } from "@/modules/operator-dashboard/hooks/ApplicationsContext";
-import FormScorecardClient from "@/modules/scoring/pages/FormScorecardClient";
+import ProtectedAdminRoute from '@/components/ProtectedAdminRoute';
+import ProtectedRoute from '@/components/ProtectedRoute';
+import AdminHomePage from '@/modules/admin/pages/AdminHomePage';
+import UsersPage from '@/modules/admin/pages/UsersPage';
+import RequestLoanPage from '@/modules/applications/pages/RequestLoanPage';
+import AdminLoginPage from '@/modules/auth/pages/AdminLoginPage';
+import { ApplicationsContextProvider } from '@/modules/operator-dashboard/hooks/ApplicationsContext';
+import FormScorecardClient from '@/modules/scoring/pages/FormScorecardClient';
+import ReportsPage from '@/modules/operator-dashboard/submodules/reports/ReportsPage';
 
 const AppRoutes = () => {
   return (
@@ -260,8 +261,7 @@ const AppRoutes = () => {
               <OperatorDashboardLayout />
             </ApplicationsContextProvider>
           </ProtectedRoute>
-        }
-      >
+        }>
         <Route index element={<OperatorDashboardPage />} />
         <Route path='clients' element={<ClientManagementPage />} />
         <Route path='risk' element={<RiskPage />} />
@@ -272,6 +272,7 @@ const AppRoutes = () => {
         <Route path='policy-engine' element={<PolicyEnginePage />} />
         <Route path='decision-engine' element={<DecisionPage />} />
         <Route path='scorecard' element={<ScorecardEngine />} />
+        <Route path='reports' element={<ReportsPage />} />
       </Route>
 
       {/* ENGINES */}
