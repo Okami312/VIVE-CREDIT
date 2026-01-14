@@ -12,13 +12,13 @@ import { ScoringCalculator } from "../components/ScoringCalculator/ScoringCalcul
 import { ScoringHistoryCard } from "../components/ScoringCalculator/ScoringHistoryCard";
 import { ScoreRange } from "../types/scoringCalculator.types";
 import { getScoreRangeLabel } from "../utils/scoringCalculator.utils";
+import { useTheme } from "../../../context/ThemeContext";
 
 type TabType = "calculator" | "history" | "statistics";
 
 export const ScoringCalculatorPage: React.FC = () => {
   const [activeTab, setActiveTab] = useState<TabType>("calculator");
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [isDarkMode, setIsDarkMode] = useState(true); // Dark mode by default
 
   const {
     isCalculating,
@@ -33,6 +33,8 @@ export const ScoringCalculatorPage: React.FC = () => {
     fetchStatistics,
     resetResult,
   } = useScoringCalculator();
+
+  const { theme, toggleTheme } = useTheme();
 
   useEffect(() => {
     fetchHistory();
@@ -66,18 +68,18 @@ export const ScoringCalculatorPage: React.FC = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-[#0f172a]">
-      {/* Mobile Header - Dark Mode with Back Button */}
-      <div className="lg:hidden sticky top-0 z-30 bg-[#172131] border-b border-[#233248] px-4 py-3">
+    <div className="min-h-screen bg-gray-50 dark:bg-[#0f172a]">
+      {/* Mobile Header - with Back Button */}
+      <div className="lg:hidden sticky top-0 z-30 bg-white dark:bg-[#172131] border-b border-gray-200 dark:border-[#233248] px-4 py-3">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             {/* Back Button - Mobile */}
             <button
               onClick={() => window.history.back()}
-              className="w-10 h-10 bg-[#233248] hover:bg-[#2e3a4d] rounded-xl flex items-center justify-center transition-colors flex-shrink-0"
+              className="w-10 h-10 bg-gray-100 dark:bg-[#233248] hover:bg-gray-200 dark:hover:bg-[#2e3a4d] rounded-xl flex items-center justify-center transition-colors flex-shrink-0"
             >
               <svg
-                className="w-5 h-5 text-gray-300"
+                className="w-5 h-5 text-gray-700 dark:text-gray-300"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -94,10 +96,10 @@ export const ScoringCalculatorPage: React.FC = () => {
               <TrendingUp className="w-5 h-5 text-white" />
             </div>
             <div>
-              <h1 className="text-lg font-bold text-white">
+              <h1 className="text-lg font-bold text-slate-900 dark:text-white">
                 Calculator Scoring
               </h1>
-              <p className="text-xs text-gray-400">
+              <p className="text-xs text-gray-600 dark:text-gray-400">
                 Calculează scorul în timp real
               </p>
             </div>
@@ -105,11 +107,11 @@ export const ScoringCalculatorPage: React.FC = () => {
           <div className="flex items-center gap-2">
             {/* Dark/Light Mode Toggle - Mobile */}
             <button
-              onClick={() => setIsDarkMode(!isDarkMode)}
-              className="w-10 h-10 bg-[#233248] hover:bg-[#2e3a4d] rounded-xl flex items-center justify-center transition-colors"
+              onClick={toggleTheme}
+              className="w-10 h-10 bg-gray-100 dark:bg-[#233248] hover:bg-gray-200 dark:hover:bg-[#2e3a4d] rounded-xl flex items-center justify-center transition-colors"
               aria-label="Toggle dark mode"
             >
-              {isDarkMode ? (
+              {theme === "dark" ? (
                 <svg
                   className="w-5 h-5 text-yellow-400"
                   fill="currentColor"
@@ -134,12 +136,12 @@ export const ScoringCalculatorPage: React.FC = () => {
             {/* Menu Toggle */}
             <button
               onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-              className="p-2 hover:bg-[#233248] rounded-lg transition-colors"
+              className="p-2 hover:bg-gray-100 dark:hover:bg-[#233248] rounded-lg transition-colors"
             >
               {isSidebarOpen ? (
-                <X className="w-5 h-5 text-gray-400" />
+                <X className="w-5 h-5 text-gray-700 dark:text-gray-400" />
               ) : (
-                <Menu className="w-5 h-5 text-gray-400" />
+                <Menu className="w-5 h-5 text-gray-700 dark:text-gray-400" />
               )}
             </button>
           </div>
@@ -155,10 +157,10 @@ export const ScoringCalculatorPage: React.FC = () => {
                 {/* Back Button - Desktop */}
                 <button
                   onClick={() => window.history.back()}
-                  className="w-12 h-12 bg-[#233248] hover:bg-[#2e3a4d] rounded-xl flex items-center justify-center transition-colors flex-shrink-0"
+                  className="w-12 h-12 bg-gray-100 dark:bg-[#233248] hover:bg-gray-200 dark:hover:bg-[#2e3a4d] rounded-xl flex items-center justify-center transition-colors flex-shrink-0"
                 >
                   <svg
-                    className="w-6 h-6 text-gray-300"
+                    className="w-6 h-6 text-gray-700 dark:text-gray-300"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -175,10 +177,10 @@ export const ScoringCalculatorPage: React.FC = () => {
                   <TrendingUp className="w-8 h-8 text-white" />
                 </div>
                 <div>
-                  <h1 className="text-3xl font-bold text-white">
+                  <h1 className="text-3xl font-bold text-slate-900 dark:text-white">
                     Calculator Scoring
                   </h1>
-                  <p className="text-gray-400">
+                  <p className="text-gray-600 dark:text-gray-400">
                     Calculează și afișează scorul în timp real
                   </p>
                 </div>
@@ -186,11 +188,11 @@ export const ScoringCalculatorPage: React.FC = () => {
 
               {/* Dark/Light Mode Toggle - Desktop */}
               <button
-                onClick={() => setIsDarkMode(!isDarkMode)}
-                className="w-12 h-12 bg-[#233248] hover:bg-[#2e3a4d] rounded-xl flex items-center justify-center transition-colors"
+                onClick={toggleTheme}
+                className="w-12 h-12 bg-gray-100 dark:bg-[#233248] hover:bg-gray-200 dark:hover:bg-[#2e3a4d] rounded-xl flex items-center justify-center transition-colors"
                 aria-label="Toggle dark mode"
               >
-                {isDarkMode ? (
+                {theme === "dark" ? (
                   <svg
                     className="w-6 h-6 text-yellow-400"
                     fill="currentColor"
@@ -215,8 +217,8 @@ export const ScoringCalculatorPage: React.FC = () => {
             </div>
           </div>
 
-          {/* Tabs - Dark Mode */}
-          <div className="flex gap-1 bg-[#172131] border border-[#233248] p-1 rounded-xl mb-4 sm:mb-6 overflow-x-auto scrollbar-hide">
+          {/* Tabs */}
+          <div className="flex gap-1 bg-white dark:bg-[#172131] border border-gray-200 dark:border-[#233248] p-1 rounded-xl mb-4 sm:mb-6 overflow-x-auto scrollbar-hide">
             {tabs.map((tab) => (
               <button
                 key={tab.id}
@@ -224,7 +226,7 @@ export const ScoringCalculatorPage: React.FC = () => {
                 className={`flex items-center gap-2 px-3 sm:px-4 py-2 sm:py-3 rounded-lg font-medium text-xs sm:text-sm transition-colors whitespace-nowrap relative flex-shrink-0 ${
                   activeTab === tab.id
                     ? "bg-[#2e57e1] text-white shadow-lg"
-                    : "text-gray-400 hover:text-white hover:bg-[#233248]"
+                    : "text-gray-600 dark:text-gray-400 hover:text-slate-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-[#233248]"
                 }`}
               >
                 {tab.icon}
@@ -246,7 +248,7 @@ export const ScoringCalculatorPage: React.FC = () => {
               {/* Calculator Tab */}
               {activeTab === "calculator" && (
                 <div>
-                  {/* Info Card - Dark Mode */}
+                  {/* Info Card */}
                   <div className="bg-[#2e57e1]/10 border border-[#2e57e1]/30 rounded-xl p-4 sm:p-5 mb-4 sm:mb-6">
                     <div className="flex items-start gap-2 sm:gap-3">
                       <div className="w-8 h-8 sm:w-10 sm:h-10 bg-[#2e57e1] rounded-lg flex items-center justify-center flex-shrink-0">
@@ -256,7 +258,7 @@ export const ScoringCalculatorPage: React.FC = () => {
                         <h3 className="font-semibold text-[#2e57e1] mb-1 text-sm sm:text-base">
                           Tool Interactiv de Scoring
                         </h3>
-                        <p className="text-xs sm:text-sm text-gray-400 break-words">
+                        <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 break-words">
                           Introduceți salariul, cheltuielile și datoriile pentru
                           a calcula scorul automat. Scorul este calculat pe baza
                           ratei de îndatorare: (cheltuieli + datorii) / salariu.
@@ -284,10 +286,10 @@ export const ScoringCalculatorPage: React.FC = () => {
                         <History className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
                       </div>
                       <div className="flex-1 min-w-0">
-                        <h3 className="font-semibold text-purple-400 mb-1 text-sm sm:text-base">
+                        <h3 className="font-semibold text-purple-600 dark:text-purple-400 mb-1 text-sm sm:text-base">
                           Istoric Calcule
                         </h3>
-                        <p className="text-xs sm:text-sm text-gray-400 break-words">
+                        <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 break-words">
                           Toate calculele de scoring efectuate anterior. Click
                           pe un card pentru detalii.
                         </p>
@@ -296,7 +298,7 @@ export const ScoringCalculatorPage: React.FC = () => {
                   </div>
 
                   {isLoadingHistory ? (
-                    <div className="flex items-center justify-center py-12 bg-[#172131] rounded-xl border border-[#233248]">
+                    <div className="flex items-center justify-center py-12 bg-white dark:bg-[#172131] rounded-xl border border-gray-200 dark:border-[#233248]">
                       <div className="w-6 h-6 sm:w-8 sm:h-8 border-2 border-[#2e57e1] border-t-transparent rounded-full animate-spin" />
                     </div>
                   ) : history.length > 0 ? (
@@ -306,8 +308,8 @@ export const ScoringCalculatorPage: React.FC = () => {
                       ))}
                     </div>
                   ) : (
-                    <div className="text-center py-12 text-gray-500 bg-[#172131] border border-[#233248] rounded-xl">
-                      <History className="w-10 h-10 sm:w-12 sm:h-12 mx-auto mb-3 text-gray-600" />
+                    <div className="text-center py-12 text-gray-500 bg-white dark:bg-[#172131] border border-gray-200 dark:border-[#233248] rounded-xl">
+                      <History className="w-10 h-10 sm:w-12 sm:h-12 mx-auto mb-3 text-gray-400 dark:text-gray-600" />
                       <p className="text-sm sm:text-base">
                         Nu există istoric de calcule
                       </p>
@@ -325,10 +327,10 @@ export const ScoringCalculatorPage: React.FC = () => {
                         <BarChart3 className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
                       </div>
                       <div className="flex-1 min-w-0">
-                        <h3 className="font-semibold text-green-400 mb-1 text-sm sm:text-base">
+                        <h3 className="font-semibold text-green-600 dark:text-green-400 mb-1 text-sm sm:text-base">
                           Statistici și Analiză
                         </h3>
-                        <p className="text-xs sm:text-sm text-gray-400 break-words">
+                        <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 break-words">
                           Statistici globale despre toate calculele de scoring
                           efectuate.
                         </p>
@@ -337,53 +339,53 @@ export const ScoringCalculatorPage: React.FC = () => {
                   </div>
 
                   {isLoadingStatistics ? (
-                    <div className="flex items-center justify-center py-12 bg-[#172131] rounded-xl border border-[#233248]">
+                    <div className="flex items-center justify-center py-12 bg-white dark:bg-[#172131] rounded-xl border border-gray-200 dark:border-[#233248]">
                       <div className="w-6 h-6 sm:w-8 sm:h-8 border-2 border-[#2e57e1] border-t-transparent rounded-full animate-spin" />
                     </div>
                   ) : statistics ? (
                     <div className="space-y-4 sm:space-y-6">
-                      {/* Stats Grid - Dark Mode */}
+                      {/* Stats Grid */}
                       <div className="grid grid-cols-2 gap-3 sm:gap-4">
-                        <div className="bg-[#172131] border border-[#233248] rounded-xl p-3 sm:p-5">
-                          <p className="text-[10px] sm:text-sm text-gray-400 mb-1">
+                        <div className="bg-white dark:bg-[#172131] border border-gray-200 dark:border-[#233248] rounded-xl p-3 sm:p-5">
+                          <p className="text-[10px] sm:text-sm text-gray-600 dark:text-gray-400 mb-1">
                             Total calcule
                           </p>
-                          <p className="text-2xl sm:text-3xl font-bold text-white">
+                          <p className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white">
                             {statistics.totalCalculations}
                           </p>
                         </div>
 
-                        <div className="bg-[#172131] border border-[#233248] rounded-xl p-3 sm:p-5">
-                          <p className="text-[10px] sm:text-sm text-gray-400 mb-1">
+                        <div className="bg-white dark:bg-[#172131] border border-gray-200 dark:border-[#233248] rounded-xl p-3 sm:p-5">
+                          <p className="text-[10px] sm:text-sm text-gray-600 dark:text-gray-400 mb-1">
                             Scor mediu
                           </p>
-                          <p className="text-2xl sm:text-3xl font-bold text-white">
+                          <p className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white">
                             {statistics.averageScore.toFixed(1)}
                           </p>
                         </div>
 
-                        <div className="bg-[#172131] border border-[#233248] rounded-xl p-3 sm:p-5">
-                          <p className="text-[10px] sm:text-sm text-gray-400 mb-1">
+                        <div className="bg-white dark:bg-[#172131] border border-gray-200 dark:border-[#233248] rounded-xl p-3 sm:p-5">
+                          <p className="text-[10px] sm:text-sm text-gray-600 dark:text-gray-400 mb-1">
                             Rată eligibilitate
                           </p>
-                          <p className="text-2xl sm:text-3xl font-bold text-green-400">
+                          <p className="text-2xl sm:text-3xl font-bold text-green-600 dark:text-green-400">
                             {statistics.eligibilityRate}%
                           </p>
                         </div>
 
-                        <div className="bg-[#172131] border border-[#233248] rounded-xl p-3 sm:p-5">
-                          <p className="text-[10px] sm:text-sm text-gray-400 mb-1">
+                        <div className="bg-white dark:bg-[#172131] border border-gray-200 dark:border-[#233248] rounded-xl p-3 sm:p-5">
+                          <p className="text-[10px] sm:text-sm text-gray-600 dark:text-gray-400 mb-1">
                             DTI mediu
                           </p>
-                          <p className="text-2xl sm:text-3xl font-bold text-white">
+                          <p className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white">
                             {(statistics.averageDebtRatio * 100).toFixed(1)}%
                           </p>
                         </div>
                       </div>
 
-                      {/* Distribution - Dark Mode */}
-                      <div className="bg-[#172131] border border-[#233248] rounded-xl p-4 sm:p-6">
-                        <h3 className="font-semibold text-white mb-3 sm:mb-4 text-sm sm:text-base">
+                      {/* Distribution */}
+                      <div className="bg-white dark:bg-[#172131] border border-gray-200 dark:border-[#233248] rounded-xl p-4 sm:p-6">
+                        <h3 className="font-semibold text-slate-900 dark:text-white mb-3 sm:mb-4 text-sm sm:text-base">
                           Distribuție pe categorii
                         </h3>
                         <div className="space-y-2 sm:space-y-3">
@@ -402,14 +404,14 @@ export const ScoringCalculatorPage: React.FC = () => {
                               return (
                                 <div key={range}>
                                   <div className="flex items-center justify-between mb-1">
-                                    <span className="text-xs sm:text-sm font-medium text-gray-300">
+                                    <span className="text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300">
                                       {getScoreRangeLabel(range as ScoreRange)}
                                     </span>
-                                    <span className="text-xs sm:text-sm text-gray-400">
+                                    <span className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">
                                       {count} ({percentage.toFixed(1)}%)
                                     </span>
                                   </div>
-                                  <div className="w-full h-1.5 sm:h-2 bg-[#0f172a] rounded-full overflow-hidden">
+                                  <div className="w-full h-1.5 sm:h-2 bg-gray-200 dark:bg-[#0f172a] rounded-full overflow-hidden">
                                     <div
                                       className={`h-full ${colorClass} transition-all`}
                                       style={{ width: `${percentage}%` }}
@@ -434,23 +436,25 @@ export const ScoringCalculatorPage: React.FC = () => {
               ${isSidebarOpen ? "block" : "hidden lg:block"}
             `}
             >
-              {/* Formula Card - Dark Mode */}
-              <div className="bg-[#172131] border border-[#233248] rounded-xl p-4 sm:p-5">
-                <h3 className="font-semibold text-white mb-3 text-xs sm:text-sm flex items-center gap-2">
+              {/* Formula Card */}
+              <div className="bg-white dark:bg-[#172131] border border-gray-200 dark:border-[#233248] rounded-xl p-4 sm:p-5">
+                <h3 className="font-semibold text-slate-900 dark:text-white mb-3 text-xs sm:text-sm flex items-center gap-2">
                   📐 Formula Scoring
                 </h3>
                 <div className="space-y-2 text-[10px] sm:text-xs">
-                  <div className="bg-[#0f172a] border border-[#233248] rounded-lg p-2 sm:p-3 font-mono">
-                    <p className="text-gray-400 mb-1">Rata îndatorare:</p>
+                  <div className="bg-gray-50 dark:bg-[#0f172a] border border-gray-200 dark:border-[#233248] rounded-lg p-2 sm:p-3 font-mono">
+                    <p className="text-gray-600 dark:text-gray-400 mb-1">
+                      Rata îndatorare:
+                    </p>
                     <p className="text-[#2e57e1] font-semibold text-[10px] sm:text-xs break-all">
                       (cheltuieli + datorii) / salariu
                     </p>
                   </div>
-                  <div className="bg-[#0f172a] border border-[#233248] rounded-lg p-2">
-                    <p className="text-gray-300 font-medium mb-1">
+                  <div className="bg-gray-50 dark:bg-[#0f172a] border border-gray-200 dark:border-[#233248] rounded-lg p-2">
+                    <p className="text-gray-700 dark:text-gray-300 font-medium mb-1">
                       Scor bazat pe rată:
                     </p>
-                    <ul className="space-y-0.5 text-gray-400 text-[10px] sm:text-xs">
+                    <ul className="space-y-0.5 text-gray-600 dark:text-gray-400 text-[10px] sm:text-xs">
                       <li>• &lt; 30% → Scor 85</li>
                       <li>• 30-40% → Scor 70</li>
                       <li>• 40-50% → Scor 55</li>
@@ -461,28 +465,34 @@ export const ScoringCalculatorPage: React.FC = () => {
                 </div>
               </div>
 
-              {/* Color Legend - Dark Mode */}
-              <div className="bg-[#172131] border border-[#233248] rounded-xl p-4 sm:p-5">
-                <h3 className="font-semibold text-white mb-3 text-xs sm:text-sm flex items-center gap-2">
+              {/* Color Legend */}
+              <div className="bg-white dark:bg-[#172131] border border-gray-200 dark:border-[#233248] rounded-xl p-4 sm:p-5">
+                <h3 className="font-semibold text-slate-900 dark:text-white mb-3 text-xs sm:text-sm flex items-center gap-2">
                   🎨 Bară Colorată
                 </h3>
                 <div className="space-y-2 text-[10px] sm:text-xs">
                   <div className="flex items-center gap-2">
                     <div className="w-3 h-3 sm:w-4 sm:h-4 bg-red-500 rounded flex-shrink-0"></div>
-                    <span className="text-gray-300">Roșu (0-40)</span>
+                    <span className="text-gray-700 dark:text-gray-300">
+                      Roșu (0-40)
+                    </span>
                   </div>
                   <div className="flex items-center gap-2">
                     <div className="w-3 h-3 sm:w-4 sm:h-4 bg-yellow-500 rounded flex-shrink-0"></div>
-                    <span className="text-gray-300">Galben (41-70)</span>
+                    <span className="text-gray-700 dark:text-gray-300">
+                      Galben (41-70)
+                    </span>
                   </div>
                   <div className="flex items-center gap-2">
                     <div className="w-3 h-3 sm:w-4 sm:h-4 bg-green-500 rounded flex-shrink-0"></div>
-                    <span className="text-gray-300">Verde (71-100)</span>
+                    <span className="text-gray-700 dark:text-gray-300">
+                      Verde (71-100)
+                    </span>
                   </div>
                 </div>
               </div>
 
-              {/* Quick Stats - Dark Mode */}
+              {/* Quick Stats */}
               {result && (
                 <div className="bg-gradient-to-br from-[#2e57e1] to-[#1e3a8a] rounded-xl p-4 sm:p-5 text-white border border-[#2e57e1]/50">
                   <h3 className="font-semibold mb-3 text-xs sm:text-sm">
