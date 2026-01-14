@@ -26,6 +26,9 @@
       "documentRequested": "Document nou solicitat"
     }
   },
+  "userBadge": {
+    "defaultName": "Utilizator"
+  },
   "language": "Selectează limba",
   "login": "Conectare",
   "logout": "Deconectare",

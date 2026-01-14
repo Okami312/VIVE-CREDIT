@@ -26,6 +26,9 @@ export interface CommonTranslations {
       documentRequested: string;
     };
   };
+  userBadge: {
+    defaultName: string;
+  };
   language: string;
   login: string;
   logout: string;

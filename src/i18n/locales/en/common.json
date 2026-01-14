@@ -8,10 +8,10 @@
   },
   "notifications": {
     "title": "Notifications",
-    "markAllRead": "Mark as read",
+    "markAllRead": "Mark all as read",
     "deleteReadTooltip": "Delete read notifications",
     "deleteOne": "Delete notification",
-    "empty": "You have no notifications.",
+    "empty": "No notifications.",
     "today": "Today",
     "yesterday": "Yesterday",
     "older": "Older",
@@ -25,6 +25,9 @@
       "applicationApproved": "Your application has been approved!",
       "documentRequested": "New document requested"
     }
+  },
+  "userBadge": {
+    "defaultName": "User"
   },
   "language": "Select language",
   "login": "Login",
