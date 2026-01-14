@@ -8,7 +8,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { AuditLog } from "./types";
+import type { AuditLog } from "./types";
 
 interface Props {
   logs: AuditLog[];

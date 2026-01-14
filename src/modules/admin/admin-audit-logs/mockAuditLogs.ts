@@ -1,6 +1,6 @@
 // src/modules/admin/audit-log/mockAuditLogs.ts
 
-import { AuditLog } from "./types";
+import type { AuditLog } from "./types";
 
 export const mockAuditLogs: AuditLog[] = [
   {
