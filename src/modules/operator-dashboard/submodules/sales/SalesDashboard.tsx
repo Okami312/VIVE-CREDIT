@@ -63,10 +63,16 @@ export default function SalesDashboard() {
   // 🔍 Filter logic
   const filteredData = salesData
     .filter((app) => {
-      const matchClient = app.client.toLowerCase().includes(searchClient.toLowerCase());
-      const matchProduct = selectedProduct === "all" || app.productValue === selectedProduct;
-      const matchStatus = selectedStatus === "all" || app.statusValue === selectedStatus;
-      const matchAgent = selectedAgent === "" || app.agent.toLowerCase().includes(selectedAgent.toLowerCase());
+      const matchClient = app.client
+        .toLowerCase()
+        .includes(searchClient.toLowerCase());
+      const matchProduct =
+        selectedProduct === "all" || app.productValue === selectedProduct;
+      const matchStatus =
+        selectedStatus === "all" || app.statusValue === selectedStatus;
+      const matchAgent =
+        selectedAgent === "" ||
+        app.agent.toLowerCase().includes(selectedAgent.toLowerCase());
       return matchClient && matchProduct && matchStatus && matchAgent;
     })
     .slice((page - 1) * itemsPerPage, page * itemsPerPage);
@@ -155,12 +161,24 @@ export default function SalesDashboard() {
         <table className="w-full text-left">
           <thead className="bg-gray-50 dark:bg-gray-800 border-b dark:border-gray-700">
             <tr>
-              <th className="px-4 py-3 font-semibold text-gray-700 dark:text-gray-300">ID</th>
-              <th className="px-4 py-3 font-semibold text-gray-700 dark:text-gray-300">Client</th>
-              <th className="px-4 py-3 font-semibold text-gray-700 dark:text-gray-300">Produs</th>
-              <th className="px-4 py-3 font-semibold text-gray-700 dark:text-gray-300">Sumă</th>
-              <th className="px-4 py-3 font-semibold text-gray-700 dark:text-gray-300">Status</th>
-              <th className="px-4 py-3 font-semibold text-gray-700 dark:text-gray-300">Acțiuni</th>
+              <th className="px-4 py-3 font-semibold text-gray-700 dark:text-gray-300">
+                ID
+              </th>
+              <th className="px-4 py-3 font-semibold text-gray-700 dark:text-gray-300">
+                Client
+              </th>
+              <th className="px-4 py-3 font-semibold text-gray-700 dark:text-gray-300">
+                Produs
+              </th>
+              <th className="px-4 py-3 font-semibold text-gray-700 dark:text-gray-300">
+                Sumă
+              </th>
+              <th className="px-4 py-3 font-semibold text-gray-700 dark:text-gray-300">
+                Status
+              </th>
+              <th className="px-4 py-3 font-semibold text-gray-700 dark:text-gray-300">
+                Acțiuni
+              </th>
             </tr>
           </thead>
 
@@ -179,7 +197,10 @@ export default function SalesDashboard() {
                   <SalesStatusBadge status={app.status} />
                 </td>
                 <td className="px-4 py-3">
-                  <div className="flex gap-3" onClick={(e) => e.stopPropagation()}>
+                  <div
+                    className="flex gap-3"
+                    onClick={(e) => e.stopPropagation()}
+                  >
                     <button
                       onClick={() => openView(app)}
                       className="px-4 py-1 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
@@ -224,7 +245,7 @@ export default function SalesDashboard() {
       )}
 
       {/* --- Modals --- */}
-      <PDFModal pdfUrl={pdfUrl} onClose={closePdf} />
+      {pdfUrl && <PDFModal pdfUrl={pdfUrl} onClose={closePdf} />}
 
       <DocsModal app={selectedApp} onClose={closeDocs} />
       <ViewModal app={viewApp} open={viewOpen} onClose={closeView} />

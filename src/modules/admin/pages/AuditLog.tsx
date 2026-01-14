@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import { mockAuditLogs } from "@/modules/admin/admin-audit-logs/mockAuditLogs";
-import type { AuditAction } from "@/modules/admin/admin-audit-logs/types";
+import type { AuditAction } from "@/modules/admin/admin-audit-logs/audit-log-types";
 import { AuditLogFilters } from "@/modules/admin/admin-audit-logs/AuditLogFilters";
 import { AuditLogTable } from "@/modules/admin/admin-audit-logs/AuditLogTable";
 
